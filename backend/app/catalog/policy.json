@@ -1,0 +1,235 @@
+{
+  "family_playbooks": {
+    "DEVICE": "SAFE_DEVICE",
+    "PRINTING": "PRINTING",
+    "NETWORK": "NETWORK",
+    "ACCESS": "ACCOUNT_ACCESS",
+    "APPLICATION": "APPLICATION",
+    "INTEGRATION": "INTEGRATION",
+    "PAYMENTS": "PAYMENTS",
+    "BUSINESS_DATA": "BUSINESS_DATA",
+    "RECOVERY": "RECOVERY",
+    "SECURITY": "SECURITY_REVIEW"
+  },
+  "profiles": [
+    {
+      "profile_id": "monitor",
+      "label": "Monitor / ekran zewnętrzny",
+      "aliases": [
+        "monitor",
+        "monitora",
+        "monitorem"
+      ],
+      "playbook_id": "MONITOR",
+      "queue": "EQUIPMENT",
+      "allow_knowledge": false
+    },
+    {
+      "profile_id": "office_scanner",
+      "label": "Skanowanie dokumentów / skaner biurowy",
+      "aliases": [
+        "SCANNING",
+        "skanowanie dokumentu",
+        "skanowania dokumentu",
+        "skanować dokument",
+        "zeskanować dokument",
+        "skanowania dokumentów",
+        "skanowanie dokumentów",
+        "skaner biurowy",
+        "zeskanować dokumentu",
+        "skanować dokumentu",
+        "zeskanować dokumentów",
+        "skanować dokumentów"
+      ],
+      "playbook_id": "SAFE_DEVICE",
+      "queue": "EQUIPMENT",
+      "allow_knowledge": true,
+      "family_overrides": {}
+    },
+    {
+      "profile_id": "fiscal_printer",
+      "label": "Drukarka paragonów / kasa fiskalna",
+      "aliases": [
+        "paragonów",
+        "paragony",
+        "fiskalna",
+        "fiskalnej"
+      ],
+      "playbook_id": "SAFE_PRINTING",
+      "queue": "SALES_SYSTEMS",
+      "family_overrides": {}
+    },
+    {
+      "profile_id": "label_printer",
+      "label": "Drukarka etykiet",
+      "aliases": [
+        "drukarka etykiet",
+        "drukarki etykiet"
+      ],
+      "playbook_id": "SAFE_PRINTING",
+      "queue": "LOGISTICS",
+      "family_overrides": {}
+    },
+    {
+      "profile_id": "payment_terminal",
+      "label": "Terminal płatniczy",
+      "aliases": [
+        "terminal płatniczy",
+        "terminala płatniczego"
+      ],
+      "playbook_id": "SAFE_DEVICE",
+      "queue": "PAYMENTS",
+      "family_overrides": {
+        "PAYMENTS": "PAYMENTS"
+      }
+    },
+    {
+      "profile_id": "shared_router",
+      "label": "Wspólny router / infrastruktura",
+      "aliases": [
+        "router",
+        "routera",
+        "ruter",
+        "rutera",
+        "switch"
+      ],
+      "playbook_id": "NETWORK",
+      "queue": "IT_SUPPORT",
+      "family_overrides": {}
+    },
+    {
+      "profile_id": "hr",
+      "label": "System kadrowo-płacowy / portal HR",
+      "aliases": [
+        "HR",
+        "kadrowo-płacowego",
+        "kadrowo",
+        "wynagrodzeń",
+        "urlopów",
+        "płacowy",
+        "portal pracowniczy",
+        "paski wynagrodzeń"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "HR_SYSTEMS",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "BUSINESS_DATA": "BUSINESS_DATA",
+        "INTEGRATION": "INTEGRATION",
+        "RECOVERY": "RECOVERY"
+      }
+    },
+    {
+      "profile_id": "wms",
+      "label": "Magazyn i logistyka",
+      "aliases": [
+        "WMS",
+        "magazynowy",
+        "magazynowe",
+        "magazynowych",
+        "magazynu",
+        "kuriera",
+        "kurierska",
+        "przesyłki"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "LOGISTICS",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "BUSINESS_DATA": "BUSINESS_DATA",
+        "INTEGRATION": "INTEGRATION"
+      }
+    },
+    {
+      "profile_id": "erp",
+      "label": "ERP",
+      "aliases": [
+        "ERP"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "SALES_SYSTEMS",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "BUSINESS_DATA": "BUSINESS_DATA",
+        "INTEGRATION": "INTEGRATION"
+      }
+    },
+    {
+      "profile_id": "pos",
+      "label": "POS / sprzedaż",
+      "aliases": [
+        "POS",
+        "system sprzedażowy",
+        "systemu sprzedażowego"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "SALES_SYSTEMS",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "DEVICE": "SAFE_DEVICE",
+        "BUSINESS_DATA": "BUSINESS_DATA",
+        "PAYMENTS": "PAYMENTS"
+      }
+    },
+    {
+      "profile_id": "ecommerce",
+      "label": "Sklep internetowy",
+      "aliases": [
+        "e-commerce",
+        "ecommerce",
+        "sklep internetowy",
+        "strona sklepu",
+        "koszyk",
+        "koszyka",
+        "formularz zamówienia"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "ECOMMERCE",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "BUSINESS_DATA": "BUSINESS_DATA",
+        "INTEGRATION": "INTEGRATION",
+        "PAYMENTS": "PAYMENTS"
+      }
+    },
+    {
+      "profile_id": "crm",
+      "label": "CRM",
+      "aliases": [
+        "CRM"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "IT_SUPPORT",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "INTEGRATION": "INTEGRATION"
+      }
+    },
+    {
+      "profile_id": "ats",
+      "label": "ATS / rekrutacja",
+      "aliases": [
+        "ATS",
+        "rekrutacyjnym",
+        "rekrutacja"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "HR_SYSTEMS",
+      "family_overrides": {
+        "ACCESS": "ACCOUNT_ACCESS",
+        "INTEGRATION": "INTEGRATION"
+      }
+    },
+    {
+      "profile_id": "signature",
+      "label": "Podpis elektroniczny",
+      "aliases": [
+        "podpis elektroniczny",
+        "podpisem elektronicznym"
+      ],
+      "playbook_id": "APPLICATION",
+      "queue": "IT_SUPPORT",
+      "family_overrides": {}
+    }
+  ]
+}

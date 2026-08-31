@@ -1,0 +1,2302 @@
+{
+  "schema_version": 1,
+  "playbooks": [
+    {
+      "playbook_id": "PRINTING",
+      "categories": [
+        "HARDWARE"
+      ],
+      "aliases": [
+        "PRINTING",
+        "PRINTER",
+        "DRUKARKA",
+        "DRUKOWANIE"
+      ],
+      "fallback_facts": [
+        "error_message",
+        "printer_status",
+        "printer_powered",
+        "printer_visible"
+      ],
+      "rules": [
+        {
+          "rule_id": "CONSUMABLE_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "consumable_depleted"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "escalation": {
+            "reason": "Reported current depleted ink or toner requires replenishment and device review; it does not establish the cause of a scanning failure.",
+            "reply": "Zgłaszasz brak tuszu lub tonera. Utworzyłem zgłoszenie do IT dotyczące uzupełnienia materiału i sprawdzenia problemu urządzenia. Nie rozbieraj urządzenia ani nie zmieniaj jego ustawień.",
+            "reason_code": "CONSUMABLE_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "ask_missing_facts": false
+        },
+        {
+          "rule_id": "CABLE_DISCONNECTED",
+          "conditions": [
+            {
+              "keys": [
+                "cable_connected"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_RECONNECT_CABLE_1"
+          ],
+          "ask_missing_facts": false,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "CABLE_SUSPECTED",
+          "conditions": [
+            {
+              "keys": [
+                "cable_issue_suspected"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_CHECK_CABLE_1"
+          ],
+          "ask_missing_facts": false,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "PAPER_JAM",
+          "conditions": [
+            {
+              "keys": [
+                "error_message",
+                "printer_status"
+              ],
+              "values": [
+                "PAPER JAM",
+                "PAPERJAM",
+                "ZACIĘCIE PAPIERU",
+                "ZACIĘTY PAPIER",
+                "ZABLOKOWANY PAPIER"
+              ],
+              "contains": true
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_PAPER_JAM_1",
+            "PRINTING_PAPER_JAM_2",
+            "PRINTING_PAPER_JAM_3"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "NO_PAPER",
+          "conditions": [
+            {
+              "keys": [
+                "error_message",
+                "printer_status"
+              ],
+              "values": [
+                "OUT OF PAPER",
+                "NO PAPER",
+                "BRAK PAPIERU"
+              ],
+              "contains": true
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_NO_PAPER_1",
+            "PRINTING_NO_PAPER_2"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "TONER",
+          "conditions": [
+            {
+              "keys": [
+                "error_message",
+                "printer_status"
+              ],
+              "values": [
+                "TONER LOW",
+                "LOW TONER",
+                "REPLACE TONER",
+                "BRAK TONERA",
+                "WYMIEŃ TONER"
+              ],
+              "contains": true
+            }
+          ],
+          "required_facts": [
+            "device_name"
+          ],
+          "actions": [
+            "PRINTING_TONER_1",
+            "PRINTING_TONER_2"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "POWER_OFF",
+          "conditions": [
+            {
+              "keys": [
+                "printer_powered"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_POWER_ON_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "NOT_VISIBLE_WIRED",
+          "conditions": [
+            {
+              "keys": [
+                "printer_powered"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "printer_visible"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "ETHERNET",
+                "USB"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "cable_connected"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_NOT_VISIBLE_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "NOT_VISIBLE_WIFI",
+          "conditions": [
+            {
+              "keys": [
+                "printer_powered"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "printer_visible"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "WIFI",
+                "WI-FI"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "wifi_connected"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_NOT_VISIBLE_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "OFFLINE_WIRED",
+          "conditions": [
+            {
+              "keys": [
+                "printer_status",
+                "error_message"
+              ],
+              "values": [
+                "OFFLINE"
+              ],
+              "contains": true
+            },
+            {
+              "keys": [
+                "printer_powered"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "printer_visible"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "ETHERNET",
+                "USB"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "cable_connected"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_OFFLINE_1",
+            "PRINTING_OFFLINE_2"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "OFFLINE_WIFI",
+          "conditions": [
+            {
+              "keys": [
+                "printer_status",
+                "error_message"
+              ],
+              "values": [
+                "OFFLINE"
+              ],
+              "contains": true
+            },
+            {
+              "keys": [
+                "printer_powered"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "printer_visible"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "WIFI",
+                "WI-FI"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "wifi_connected"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "PRINTING_OFFLINE_1",
+            "PRINTING_OFFLINE_2"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        }
+      ],
+      "fact_conditions": {
+        "cable_connected": [
+          {
+            "keys": [
+              "connection_type"
+            ],
+            "values": [
+              "ETHERNET",
+              "USB"
+            ],
+            "contains": false
+          }
+        ],
+        "wifi_connected": [
+          {
+            "keys": [
+              "connection_type"
+            ],
+            "values": [
+              "WIFI",
+              "WI-FI"
+            ],
+            "contains": false
+          }
+        ]
+      },
+      "questions": {
+        "connection_type": "Jak ta drukarka jest połączona: kablem sieciowym (Ethernet), kablem USB czy przez Wi-Fi? Jeśli nie wiesz, napisz to.",
+        "cable_connected": "Sprawdź dostępne końce kabla łączącego drukarkę lub komputer z siecią albo kabla USB drukarki, bez odłączania innych przewodów. Czy są pewnie wpięte, czy widzisz wypiętą wtyczkę?",
+        "wifi_connected": "Sprawdź status połączenia na drukarce. Czy jest połączona ze znaną siecią firmową Wi-Fi? Nie zmieniaj konfiguracji i nie podawaj hasła.",
+        "printer_visible": "Czy na liście drukarek w komputerze widnieje nazwa tej drukarki, nawet jeśli obok jest napis „Offline” lub „Niedostępna”?",
+        "error_message": "Czy widzisz komunikat lub kod błędu na drukarce? Jeśli nie ma komunikatu, napisz to.",
+        "printer_status": "Jaki status pokazuje drukarka: gotowa, offline czy inny?",
+        "device_name": "Jaki jest model drukarki? Nie podawaj danych z drukowanych dokumentów.",
+        "printer_powered": "Czy drukarka jest włączona i świeci jej kontrolka zasilania?"
+      },
+      "clarification_questions": {
+        "printer_visible": "Pytam o sam wpis na liście, nie o gotowość do druku. Czy widzisz nazwę tej drukarki, także gdy jest oznaczona jako offline lub niedostępna?"
+      },
+      "boolean_facts": [
+        "printer_powered",
+        "printer_visible",
+        "wifi_connected"
+      ],
+      "version": "2",
+      "fact_definitions": {
+        "printer_powered": {
+          "description": "Czy drukarka jest włączona.",
+          "value_type": "boolean"
+        },
+        "printer_visible": {
+          "description": "Czy nazwa drukarki widnieje na liście drukarek w komputerze, niezależnie od statusu Offline/Niedostępna. Widoczność nie oznacza gotowości do druku.",
+          "value_type": "boolean"
+        },
+        "printer_status": {
+          "description": "Jaki status pokazuje drukarka lub system.",
+          "value_type": "string"
+        },
+        "error_message": {
+          "description": "Jaki dokładnie komunikat lub błąd jest widoczny.",
+          "value_type": "string"
+        },
+        "device_name": {
+          "description": "Jaki jest model, nazwa lub lokalizacja drukarki.",
+          "value_type": "string"
+        },
+        "connection_type": {
+          "description": "Jak drukarka łączy się z komputerem lub siecią: ETHERNET, USB albo WIFI. Nie zgaduj na podstawie samego statusu offline.",
+          "value_type": "string",
+          "allowed_values": [
+            "USB",
+            "ETHERNET",
+            "WIFI",
+            "WI-FI"
+          ],
+          "answer_aliases": {
+            "przez USB": "USB",
+            "przez ETHERNET": "ETHERNET",
+            "przez WIFI": "WIFI",
+            "przez WI-FI": "WI-FI",
+            "przez kabel": "ETHERNET",
+            "przez kabel się łączę": "ETHERNET",
+            "kabel sieciowy": "ETHERNET",
+            "kablem sieciowym": "ETHERNET",
+            "wi fi": "WIFI",
+            "przez wi fi": "WIFI",
+            "kabel USB": "USB",
+            "kablem USB": "USB",
+            "przez kabel USB": "USB"
+          }
+        },
+        "cable_connected": {
+          "description": "Czy użytkownik sprawdził kabel transmisji danych przy drukarce lub komputerze: true = wpięty, false = widocznie wypięty. Samo podejrzenie nie ustala tej wartości.",
+          "value_type": "boolean"
+        },
+        "cable_issue_suspected": {
+          "description": "Czy użytkownik podejrzewa luźny lub odłączony kabel w związku z tym problemem, np. 'chyba odłączony kabel od internetu'. To wskazówka do sprawdzenia, nie potwierdzona przyczyna.",
+          "value_type": "boolean"
+        },
+        "wifi_connected": {
+          "description": "Czy drukarka pokazuje połączenie ze znaną siecią firmową Wi-Fi. Nie proś o hasło ani zmianę konfiguracji.",
+          "value_type": "boolean"
+        },
+        "consumable_depleted": {
+          "description": "Czy użytkownik zgłasza aktualny komunikat o braku tuszu/tonera lub potwierdza pusty wkład: true. Sam niski poziom, zaprzeczenie lub już wymieniony wkład: false. Podejrzenie bez sprawdzenia: niepewne, nie true. Nie zgaduj na podstawie problemu skanowania.",
+          "value_type": "boolean"
+        }
+      },
+      "extraction_reasoning": true,
+      "resolution_goal": "Użytkownik może normalnie wydrukować dokument. Samo włączenie drukarki nie wystarcza, jeśli nadal pokazuje OFFLINE lub inny błąd.",
+      "unresolved_conditions": [
+        {
+          "keys": [
+            "printer_powered"
+          ],
+          "values": [
+            false
+          ]
+        },
+        {
+          "keys": [
+            "printer_status",
+            "error_message"
+          ],
+          "values": [
+            "OFFLINE",
+            "PAPER JAM",
+            "BRAK PAPIERU"
+          ],
+          "contains": true
+        }
+      ]
+    },
+    {
+      "playbook_id": "NETWORK",
+      "categories": [
+        "NETWORK"
+      ],
+      "aliases": [
+        "NETWORK",
+        "INTERNET",
+        "WIFI",
+        "WI-FI",
+        "ETHERNET",
+        "SIEĆ",
+        "ROUTER",
+        "RUTER"
+      ],
+      "fallback_facts": [
+        "connection_type",
+        "other_devices_work",
+        "error_message",
+        "network_visible"
+      ],
+      "rules": [
+        {
+          "rule_id": "ETHERNET_LOCAL_CONNECTION",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "ETHERNET"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "other_devices_work"
+              ],
+              "values": [
+                true,
+                null
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "NETWORK_RESEAT_ETHERNET_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WIFI_DISABLED_OR_STALE",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "WIFI",
+                "WI-FI"
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "network_visible"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "other_devices_work"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "NETWORK_WIFI_REFRESH_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WIFI_VISIBLE_LOCAL_FAILURE",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "WIFI",
+                "WI-FI"
+              ]
+            },
+            {
+              "keys": [
+                "network_visible"
+              ],
+              "values": [
+                true
+              ]
+            },
+            {
+              "keys": [
+                "other_devices_work"
+              ],
+              "values": [
+                true,
+                null
+              ]
+            }
+          ],
+          "actions": [
+            "NETWORK_WIFI_RECONNECT_1"
+          ]
+        },
+        {
+          "rule_id": "LOCAL_NETWORK_FAILURE",
+          "conditions": [
+            {
+              "keys": [
+                "other_devices_work"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": {
+            "reason": "Other devices on the same network are also affected; IT must check shared infrastructure.",
+            "reply": "Problem dotyczy także innych urządzeń, więc przekazałem zgłoszenie do IT. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — wpływa to na pozostałych użytkowników.",
+            "reason_code": "LOCAL_NETWORK_FAILURE"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "NETWORK_SAFE_LIMIT",
+          "conditions": [],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": {
+            "reason": "Employee-safe network checks exhausted or unavailable; infrastructure work requires IT.",
+            "reply": "Dalsza diagnostyka wymaga IT. Utworzyłem zgłoszenie z zebranymi informacjami. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — mogłoby to przerwać pracę innych osób."
+          }
+        }
+      ],
+      "fact_conditions": {
+        "network_visible": [
+          {
+            "keys": [
+              "connection_type"
+            ],
+            "values": [
+              "WIFI",
+              "WI-FI"
+            ],
+            "contains": false
+          }
+        ],
+        "router_powered": [
+          {
+            "keys": [
+              "connection_type"
+            ],
+            "values": [
+              "WIFI",
+              "WI-FI"
+            ],
+            "contains": false
+          }
+        ]
+      },
+      "questions": {
+        "connection_type": "Czy łączysz się z internetem przez Wi-Fi czy kabel sieciowy (Ethernet)?",
+        "other_devices_work": "Czy inne urządzenia firmowe w tej samej sieci mają dostęp do internetu? Jeśli nie wiesz, napisz to.",
+        "network_visible": "Czy widzisz firmową sieć Wi-Fi na liście sieci na swoim komputerze?",
+        "error_message": "Jaki komunikat o połączeniu pokazuje komputer? Nie podawaj haseł ani kodów."
+      },
+      "clarification_questions": {},
+      "boolean_facts": [
+        "other_devices_work",
+        "network_visible"
+      ],
+      "version": "2",
+      "fact_definitions": {
+        "connection_type": {
+          "description": "Jak komputer łączy się z siecią: WIFI albo ETHERNET (kabel sieciowy). Zgłoszenie Nie działa mi połączenie Wi-Fi już wskazuje WIFI, mimo że połączenie nie działa. Wypisz ten fakt także gdy widnieje już w opisie incydentu.",
+          "value_type": "string",
+          "allowed_values": [
+            "ETHERNET",
+            "WIFI",
+            "WI-FI"
+          ],
+          "answer_aliases": {
+            "przez ETHERNET": "ETHERNET",
+            "przez WIFI": "WIFI",
+            "przez WI-FI": "WI-FI",
+            "przez kabel": "ETHERNET",
+            "przez kabel się łączę": "ETHERNET",
+            "kabel sieciowy": "ETHERNET",
+            "kablem sieciowym": "ETHERNET",
+            "wi fi": "WIFI",
+            "przez wi fi": "WIFI"
+          }
+        },
+        "network_visible": {
+          "description": "Czy oczekiwana sieć Wi-Fi jest widoczna.",
+          "value_type": "boolean"
+        },
+        "other_devices_work": {
+          "description": "Czy inne urządzenie działa w tej samej sieci.",
+          "value_type": "boolean"
+        },
+        "router_powered": {
+          "description": "Czy router lub urządzenie sieciowe jest włączone.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Jaki dokładnie komunikat sieciowy jest widoczny.",
+          "value_type": "string"
+        }
+      },
+      "extraction_reasoning": true,
+      "resolution_goal": "Na tym komputerze działa dostęp do internetu. Widoczność sieci lub działanie internetu na innym urządzeniu nie wystarcza.",
+      "unresolved_conditions": [
+        {
+          "keys": [
+            "network_visible"
+          ],
+          "values": [
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "playbook_id": "VPN",
+      "categories": [
+        "NETWORK"
+      ],
+      "aliases": [
+        "VPN",
+        "REMOTE ACCESS",
+        "ZDALNY DOSTĘP"
+      ],
+      "fallback_facts": [
+        "normal_internet_works",
+        "vpn_client_starts",
+        "vpn_connection_status",
+        "error_message"
+      ],
+      "rules": [
+        {
+          "rule_id": "AUTHENTICATION_STOP",
+          "conditions": [
+            {
+              "keys": [
+                "account_locked",
+                "password_expired"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Locked account or expired password requires approved account recovery.",
+            "reply": "Utworzyłem zgłoszenie do IT dotyczące dostępu do VPN. Nie próbuj kolejnych haseł, nie wyłączaj MFA i nie wpisuj tutaj hasła ani kodów.",
+            "ticket_kind": "ACCESS_REQUEST",
+            "queue": "ACCESS",
+            "reason_code": "ACCOUNT_RECOVERY_REQUIRED"
+          }
+        },
+        {
+          "rule_id": "VPN_CLIENT_NOT_STARTING",
+          "conditions": [
+            {
+              "keys": [
+                "vpn_client_starts"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "VPN_CLIENT_RESTART_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "VPN_CONNECTION_FAILED",
+          "conditions": [
+            {
+              "keys": [
+                "normal_internet_works"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "vpn_client_starts"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            },
+            {
+              "keys": [
+                "vpn_connection_status"
+              ],
+              "values": [
+                "FAILED",
+                "DISCONNECTED",
+                "CONNECTION FAILED",
+                "NIEPOŁĄCZONY",
+                "BŁĄD"
+              ],
+              "contains": true
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "VPN_RECONNECT_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        }
+      ],
+      "fact_conditions": {},
+      "questions": {
+        "normal_internet_works": "Czy na tym komputerze działa zwykły internet poza VPN? Nie rozłączaj sesji, jeśli przerwie to niezapisaną pracę.",
+        "vpn_client_starts": "Czy firmowa aplikacja VPN uruchamia się?",
+        "vpn_connection_status": "Jaki status pokazuje firmowa aplikacja VPN: połączono, rozłączono czy błąd?",
+        "error_message": "Jaki komunikat błędu pokazuje VPN? Bez haseł, kodów MFA i tokenów."
+      },
+      "clarification_questions": {},
+      "boolean_facts": [
+        "normal_internet_works",
+        "vpn_client_starts"
+      ],
+      "version": "2",
+      "fact_definitions": {
+        "normal_internet_works": {
+          "description": "Czy Internet działa bez połączenia VPN.",
+          "value_type": "boolean"
+        },
+        "vpn_client_starts": {
+          "description": "Czy firmowa aplikacja VPN uruchamia się.",
+          "value_type": "boolean"
+        },
+        "vpn_connection_status": {
+          "description": "Jaki status połączenia pokazuje VPN.",
+          "value_type": "string"
+        },
+        "error_message": {
+          "description": "Jaki dokładnie komunikat lub kod błędu pokazuje VPN.",
+          "value_type": "string"
+        },
+        "account_locked": {
+          "description": "Czy komunikat mówi, że konto jest zablokowane. Nie wnioskuj blokady z samej odmowy logowania.",
+          "value_type": "boolean"
+        },
+        "password_expired": {
+          "description": "Czy komunikat logowania wyraźnie mówi o wygaśnięciu hasła. Nie wnioskuj tego z samego błędu logowania.",
+          "value_type": "boolean"
+        }
+      },
+      "resolution_goal": "Działa dostęp do zasobów przez firmowy VPN na tym komputerze; samo uruchomienie aplikacji nie wystarcza.",
+      "unresolved_conditions": [
+        {
+          "keys": [
+            "account_locked",
+            "password_expired"
+          ],
+          "values": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "playbook_id": "OUTLOOK",
+      "categories": [
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "SOFTWARE"
+      ],
+      "aliases": [
+        "OUTLOOK",
+        "OUTLOOKA",
+        "OUTLOOKU"
+      ],
+      "fallback_facts": [
+        "login_problem",
+        "error_message"
+      ],
+      "rules": [
+        {
+          "rule_id": "ACCOUNT_RECOVERY_REQUIRED",
+          "conditions": [
+            {
+              "keys": [
+                "password_expired",
+                "account_locked"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Outlook sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów.",
+            "reason_code": "ACCOUNT_RECOVERY_REQUIRED",
+            "ticket_kind": "ACCESS_REQUEST",
+            "queue": "ACCESS"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "CURRENT_PASSWORD_UNKNOWN",
+          "conditions": [
+            {
+              "keys": [
+                "current_password"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Outlook sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów.",
+            "reason_code": "CURRENT_PASSWORD_UNKNOWN",
+            "ticket_kind": "ACCESS_REQUEST",
+            "queue": "ACCESS"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WRONG_ACCOUNT",
+          "conditions": [
+            {
+              "keys": [
+                "correct_account"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "OUTLOOK_CORRECT_ACCOUNT_1"
+          ],
+          "ask_missing_facts": false,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "SIGN_IN_BASICS",
+          "conditions": [
+            {
+              "keys": [
+                "login_problem"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [
+            "correct_account",
+            "current_password",
+            "password_expired",
+            "other_device_available",
+            "other_device_works",
+            "error_message"
+          ],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": {
+            "reason": "Outlook sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów."
+          }
+        }
+      ],
+      "fact_conditions": {
+        "other_device_works": [
+          {
+            "keys": [
+              "other_device_available"
+            ],
+            "values": [
+              true
+            ],
+            "contains": false
+          }
+        ]
+      },
+      "questions": {
+        "login_problem": "Czy problem polega na tym, że nie możesz zalogować się do Outlooka?",
+        "correct_account": "Sprawdź konto widoczne w oknie logowania do Outlooka. Czy jest to Twoje właściwe konto firmowe? Nie podawaj tutaj loginu ani hasła.",
+        "current_password": "Czy używasz aktualnego hasła do tego konta, uwzględniając jego ostatnią zmianę? Nie wpisuj tutaj hasła i nie próbuj zgadywać kolejnych haseł.",
+        "password_expired": "Sprawdź komunikat logowania. Czy jest w nim napisane, że hasło wygasło? Jeśli nie możesz tego ustalić, napisz to; nie zgaduj.",
+        "other_device_available": "Czy masz dostęp do innego urządzenia firmowego, na którym wolno Ci korzystać z Outlooka? Nie używaj konta innej osoby.",
+        "other_device_works": "Sprawdź, czy otworzysz Outlooka na tym drugim urządzeniu firmowym na swoim koncie. Jeśli wymaga logowania, wykonaj najwyżej jedną próbę, tylko gdy znasz aktualne hasło. Nie korzystaj z linków w podejrzanych wiadomościach; przy komunikacie o blokadzie lub wygaśnięciu hasła zatrzymaj się i napisz to. Czy Outlook działa na tym drugim urządzeniu?",
+        "error_message": "Jaki dokładnie komunikat pokazuje Outlook? Podaj sam komunikat, bez hasła, kodów MFA ani tokenów."
+      },
+      "clarification_questions": {},
+      "boolean_facts": [
+        "login_problem",
+        "correct_account",
+        "current_password",
+        "password_expired",
+        "other_device_available",
+        "other_device_works"
+      ],
+      "version": "2",
+      "fact_definitions": {
+        "login_problem": {
+          "description": "Czy problem dotyczy logowania do Outlooka. Nie utożsamiaj braku wysyłania poczty z problemem logowania.",
+          "value_type": "boolean"
+        },
+        "correct_account": {
+          "description": "Czy użytkownik sprawdził, że w logowaniu do Outlooka wybrano jego właściwe konto firmowe.",
+          "value_type": "boolean"
+        },
+        "current_password": {
+          "description": "Czy użytkownik potwierdza, że zna i używa aktualnego hasła, uwzględniając ostatnią zmianę. Nie zapisuj jego treści. Sam błąd logowania nie oznacza false.",
+          "value_type": "boolean"
+        },
+        "password_expired": {
+          "description": "Czy komunikat logowania wyraźnie mówi o wygaśnięciu hasła. Nie wnioskuj tego z samego błędu logowania.",
+          "value_type": "boolean"
+        },
+        "account_locked": {
+          "description": "Czy komunikat mówi, że konto jest zablokowane. Nie wnioskuj blokady z samej odmowy logowania.",
+          "value_type": "boolean"
+        },
+        "other_device_available": {
+          "description": "Czy dostępne jest inne urządzenie firmowe dopuszczone do korzystania z poczty. Brak urządzenia nie oznacza nieudanego testu.",
+          "value_type": "boolean"
+        },
+        "other_device_works": {
+          "description": "Czy to samo konto otwiera Outlooka na innym dozwolonym urządzeniu firmowym. To wynik porównawczy, nie rozwiązanie problemu na pierwszym komputerze.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Jaki komunikat logowania widzi użytkownik, bez haseł, kodów i tokenów.",
+          "value_type": "string"
+        }
+      },
+      "resolution_goal": "Outlook działa na pierwotnym komputerze użytkownika. Działanie na innym urządzeniu nie jest rozwiązaniem pierwotnej awarii.",
+      "unresolved_conditions": [
+        {
+          "keys": [
+            "account_locked",
+            "password_expired"
+          ],
+          "values": [
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "playbook_id": "MOUSE",
+      "categories": [
+        "HARDWARE"
+      ],
+      "aliases": [
+        "MOUSE",
+        "MYSZ",
+        "MYSZKA",
+        "MYSZKI",
+        "MYSZY"
+      ],
+      "fallback_facts": [
+        "connection_type"
+      ],
+      "rules": [
+        {
+          "rule_id": "PHYSICAL_HAZARD",
+          "conditions": [
+            {
+              "keys": [
+                "physical_hazard"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Reported physical hazard; stop employee troubleshooting and request IT review.",
+            "reply": "Przerwij używanie i ładowanie tego urządzenia; nie dotykaj uszkodzonych elementów i nie rozbieraj obudowy. Przekazałem zgłoszenie do IT. Jeśli jest dym lub ogień, odsuń się i skorzystaj z firmowej procedury alarmowej.",
+            "reason_code": "PHYSICAL_HAZARD",
+            "safety_stop": true
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "BATTERY_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "battery_depleted"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "User reports a depleted battery in mouse; request suitable replacement batteries or charging assistance for a built-in battery. Battery type and quantity require verification.",
+            "reply": "Utworzyłem zgłoszenie do IT dotyczące rozładowanej baterii urządzenia (mysz) — o dostarczenie odpowiedniej baterii lub pomoc z ładowaniem, jeśli urządzenie ma wbudowany akumulator. Nie wyjmuj wbudowanego akumulatora.",
+            "reason_code": "BATTERY_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WIRED_USB",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "USB"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "MOUSE_USB_RECONNECT_1",
+            "MOUSE_USB_PORT_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "USB_RECEIVER",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "USB_RECEIVER"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "MOUSE_POWER_1",
+            "MOUSE_USB_RECONNECT_1",
+            "MOUSE_USB_PORT_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "BLUETOOTH",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "BLUETOOTH"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "MOUSE_POWER_1",
+            "MOUSE_BLUETOOTH_CHECK_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "PERIPHERAL_SAFE_LIMIT",
+          "conditions": [],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": {
+            "reason": "Safe mouse connection/power checks exhausted or unavailable.",
+            "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+          }
+        }
+      ],
+      "fact_conditions": {},
+      "questions": {
+        "connection_type": "Jak podłączone jest urządzenie (mysz): kablem USB, przez mały odbiornik USB czy przez Bluetooth? Jeśli nie wiesz, napisz to — nie odłączaj innych urządzeń."
+      },
+      "clarification_questions": {
+        "connection_type": "W przypadku urządzenia bezprzewodowego: czy przy komputerze jest jego mały odbiornik USB, czy łączy się przez Bluetooth? Jeśli nie potrafisz tego ustalić, napisz to — nie zgaduj odbiornika."
+      },
+      "boolean_facts": [],
+      "version": "2",
+      "fact_definitions": {
+        "connection_type": {
+          "description": "Połączenie urządzenia wejściowego: USB (kabel), USB_RECEIVER (własny odbiornik USB) albo BLUETOOTH. Samo 'bezprzewodowa' nie rozstrzyga między odbiornikiem i Bluetooth. Nie używaj WIFI ani ETHERNET.",
+          "value_type": "string",
+          "allowed_values": [
+            "USB",
+            "USB_RECEIVER",
+            "BLUETOOTH"
+          ],
+          "answer_aliases": {
+            "przez USB": "USB",
+            "przez USB_RECEIVER": "USB_RECEIVER",
+            "przez BLUETOOTH": "BLUETOOTH",
+            "kabel USB": "USB",
+            "kablem USB": "USB",
+            "przez kabel USB": "USB",
+            "odbiornik USB": "USB_RECEIVER",
+            "przez odbiornik USB": "USB_RECEIVER"
+          }
+        },
+        "wireless": {
+          "description": "True gdy urządzenie jest bezprzewodowe. Jeśli nie wiadomo, czy używa odbiornika USB czy Bluetooth, zapisz tylko wireless=true bez ustalania connection_type.",
+          "value_type": "boolean"
+        },
+        "power_checked": {
+          "description": "True tylko gdy użytkownik już sprawdził, że urządzenie bezprzewodowe jest włączone, a baterie są sprawne lub akumulator naładowany. Samo wykonanie innego kroku nie ustala tego faktu.",
+          "value_type": "boolean"
+        },
+        "battery_depleted": {
+          "description": "Czy użytkownik stwierdza, że bateria lub akumulator tego urządzenia jest obecnie rozładowany, np. 'Bateria się rozładowała'. True tylko dla zgłoszonego aktualnego stanu; samo podejrzenie ('może bateria'), pytanie lub brak działania nie wystarcza. False jeśli baterie są sprawne, wymienione na nowe lub akumulator już naładowany; nie zapisuj historycznego rozładowania jako true.",
+          "value_type": "boolean"
+        },
+        "physical_hazard": {
+          "description": "Czy użytkownik zgłasza zalanie, uszkodzony przewód/obudowę, przegrzewanie, dym lub spuchnięty akumulator. Sam brak działania nie oznacza uszkodzenia.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Komunikat dotyczący urządzenia, o ile użytkownik go podał.",
+          "value_type": "string"
+        }
+      }
+    },
+    {
+      "playbook_id": "KEYBOARD",
+      "categories": [
+        "HARDWARE"
+      ],
+      "aliases": [
+        "KEYBOARD",
+        "KLAWIATURA",
+        "KLAWIATURY",
+        "KLAWIATURĄ"
+      ],
+      "fallback_facts": [
+        "connection_type"
+      ],
+      "rules": [
+        {
+          "rule_id": "PHYSICAL_HAZARD",
+          "conditions": [
+            {
+              "keys": [
+                "physical_hazard"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Reported physical hazard; stop employee troubleshooting and request IT review.",
+            "reply": "Przerwij używanie i ładowanie tego urządzenia; nie dotykaj uszkodzonych elementów i nie rozbieraj obudowy. Przekazałem zgłoszenie do IT. Jeśli jest dym lub ogień, odsuń się i skorzystaj z firmowej procedury alarmowej.",
+            "reason_code": "PHYSICAL_HAZARD",
+            "safety_stop": true
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "BATTERY_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "battery_depleted"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "User reports a depleted battery in keyboard; request suitable replacement batteries or charging assistance for a built-in battery. Battery type and quantity require verification.",
+            "reply": "Utworzyłem zgłoszenie do IT dotyczące rozładowanej baterii urządzenia (klawiatura) — o dostarczenie odpowiedniej baterii lub pomoc z ładowaniem, jeśli urządzenie ma wbudowany akumulator. Nie wyjmuj wbudowanego akumulatora.",
+            "reason_code": "BATTERY_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WIRED_USB",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "USB"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "KEYBOARD_USB_RECONNECT_1",
+            "KEYBOARD_USB_PORT_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "USB_RECEIVER",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "USB_RECEIVER"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "KEYBOARD_POWER_1",
+            "KEYBOARD_USB_RECONNECT_1",
+            "KEYBOARD_USB_PORT_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "BLUETOOTH",
+          "conditions": [
+            {
+              "keys": [
+                "connection_type"
+              ],
+              "values": [
+                "BLUETOOTH"
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [
+            "KEYBOARD_POWER_1",
+            "KEYBOARD_BLUETOOTH_CHECK_1"
+          ],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "PERIPHERAL_SAFE_LIMIT",
+          "conditions": [],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": {
+            "reason": "Safe keyboard connection/power checks exhausted or unavailable.",
+            "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+          }
+        }
+      ],
+      "fact_conditions": {},
+      "questions": {
+        "connection_type": "Jak podłączone jest urządzenie (klawiatura): kablem USB, przez mały odbiornik USB czy przez Bluetooth? Jeśli nie wiesz, napisz to — nie odłączaj innych urządzeń."
+      },
+      "clarification_questions": {
+        "connection_type": "W przypadku urządzenia bezprzewodowego: czy przy komputerze jest jego mały odbiornik USB, czy łączy się przez Bluetooth? Jeśli nie potrafisz tego ustalić, napisz to — nie zgaduj odbiornika."
+      },
+      "boolean_facts": [],
+      "version": "2",
+      "fact_definitions": {
+        "connection_type": {
+          "description": "Połączenie urządzenia wejściowego: USB (kabel), USB_RECEIVER (własny odbiornik USB) albo BLUETOOTH. Samo 'bezprzewodowa' nie rozstrzyga między odbiornikiem i Bluetooth. Nie używaj WIFI ani ETHERNET.",
+          "value_type": "string",
+          "allowed_values": [
+            "USB",
+            "USB_RECEIVER",
+            "BLUETOOTH"
+          ],
+          "answer_aliases": {
+            "przez USB": "USB",
+            "przez USB_RECEIVER": "USB_RECEIVER",
+            "przez BLUETOOTH": "BLUETOOTH",
+            "kabel USB": "USB",
+            "kablem USB": "USB",
+            "przez kabel USB": "USB",
+            "odbiornik USB": "USB_RECEIVER",
+            "przez odbiornik USB": "USB_RECEIVER"
+          }
+        },
+        "wireless": {
+          "description": "True gdy urządzenie jest bezprzewodowe. Jeśli nie wiadomo, czy używa odbiornika USB czy Bluetooth, zapisz tylko wireless=true bez ustalania connection_type.",
+          "value_type": "boolean"
+        },
+        "power_checked": {
+          "description": "True tylko gdy użytkownik już sprawdził, że urządzenie bezprzewodowe jest włączone, a baterie są sprawne lub akumulator naładowany. Samo wykonanie innego kroku nie ustala tego faktu.",
+          "value_type": "boolean"
+        },
+        "battery_depleted": {
+          "description": "Czy użytkownik stwierdza, że bateria lub akumulator tego urządzenia jest obecnie rozładowany, np. 'Bateria się rozładowała'. True tylko dla zgłoszonego aktualnego stanu; samo podejrzenie ('może bateria'), pytanie lub brak działania nie wystarcza. False jeśli baterie są sprawne, wymienione na nowe lub akumulator już naładowany; nie zapisuj historycznego rozładowania jako true.",
+          "value_type": "boolean"
+        },
+        "physical_hazard": {
+          "description": "Czy użytkownik zgłasza zalanie, uszkodzony przewód/obudowę, przegrzewanie, dym lub spuchnięty akumulator. Sam brak działania nie oznacza uszkodzenia.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Komunikat dotyczący urządzenia, o ile użytkownik go podał.",
+          "value_type": "string"
+        }
+      }
+    },
+    {
+      "playbook_id": "SAFE_DEVICE",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "SAFE_DEVICE"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu urządzenia, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        },
+        "consumable_depleted": {
+          "description": "Czy użytkownik zgłasza aktualny komunikat o braku tuszu/tonera lub potwierdza pusty wkład: true. Sam niski poziom, zaprzeczenie lub już wymieniony wkład: false. Podejrzenie bez sprawdzenia: niepewne, nie true. Nie zgaduj na podstawie problemu skanowania.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu urządzenia? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": true,
+      "rules": [
+        {
+          "rule_id": "CONSUMABLE_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "consumable_depleted"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "escalation": {
+            "reason": "Reported current depleted ink or toner requires replenishment and device review; it does not establish the cause of a scanning failure.",
+            "reply": "Zgłaszasz brak tuszu lub tonera. Utworzyłem zgłoszenie do IT dotyczące uzupełnienia materiału i sprawdzenia problemu urządzenia. Nie rozbieraj urządzenia ani nie zmieniaj jego ustawień.",
+            "reason_code": "CONSUMABLE_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "ask_missing_facts": false
+        }
+      ],
+      "extraction_reasoning": true
+    },
+    {
+      "playbook_id": "SAFE_PRINTING",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "SAFE_PRINTING"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu drukarki specjalistycznej, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        },
+        "consumable_depleted": {
+          "description": "Czy użytkownik zgłasza aktualny komunikat o braku tuszu/tonera lub potwierdza pusty wkład: true. Sam niski poziom, zaprzeczenie lub już wymieniony wkład: false. Podejrzenie bez sprawdzenia: niepewne, nie true. Nie zgaduj na podstawie problemu skanowania.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu drukarki specjalistycznej? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "CONSUMABLE_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "consumable_depleted"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "escalation": {
+            "reason": "Reported current depleted ink or toner requires replenishment and device review; it does not establish the cause of a scanning failure.",
+            "reply": "Zgłaszasz brak tuszu lub tonera. Utworzyłem zgłoszenie do IT dotyczące uzupełnienia materiału i sprawdzenia problemu urządzenia. Nie rozbieraj urządzenia ani nie zmieniaj jego ustawień.",
+            "reason_code": "CONSUMABLE_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "ask_missing_facts": false
+        },
+        {
+          "rule_id": "SAFE_PRINTING_HANDOFF",
+          "conditions": [],
+          "exhausted_escalation": {
+            "reason_code": "SAFE_PRINTING_HANDOFF",
+            "reason": "Safe printing handoff",
+            "reply": "Zapisano zgłoszenie drukarki paragonów lub etykiet. Nie resetuj urządzenia, nie otwieraj zabezpieczonych elementów i nie ponawiaj dokumentów fiskalnych. Potrzebna jest procedura dla tego modelu.",
+            "queue": "SALES_SYSTEMS",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ],
+      "extraction_reasoning": true
+    },
+    {
+      "playbook_id": "APPLICATION",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "APPLICATION"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu aplikacji, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        },
+        "consumable_depleted": {
+          "description": "Czy użytkownik zgłasza aktualny komunikat o braku tuszu/tonera lub potwierdza pusty wkład: true. Sam niski poziom, zaprzeczenie lub już wymieniony wkład: false. Podejrzenie bez sprawdzenia: niepewne, nie true. Nie zgaduj na podstawie problemu skanowania.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu aplikacji? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": true,
+      "rules": [
+        {
+          "rule_id": "CONSUMABLE_DEPLETED",
+          "conditions": [
+            {
+              "keys": [
+                "consumable_depleted"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "escalation": {
+            "reason": "Reported current depleted ink or toner requires replenishment and device review; it does not establish the cause of a scanning failure.",
+            "reply": "Zgłaszasz brak tuszu lub tonera. Utworzyłem zgłoszenie do IT dotyczące uzupełnienia materiału i sprawdzenia problemu urządzenia. Nie rozbieraj urządzenia ani nie zmieniaj jego ustawień.",
+            "reason_code": "CONSUMABLE_DEPLETED",
+            "ticket_kind": "SERVICE_REQUEST",
+            "queue": "EQUIPMENT"
+          },
+          "ask_missing_facts": false
+        }
+      ],
+      "extraction_reasoning": true
+    },
+    {
+      "playbook_id": "INTEGRATION",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "INTEGRATION"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu integracji, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu integracji? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "INTEGRATION_HANDOFF",
+          "conditions": [],
+          "exhausted_escalation": {
+            "reason_code": "INTEGRATION_HANDOFF",
+            "reason": "Integration handoff",
+            "reply": "Zapisano zgłoszenie integracji. Nie ponawiaj importu, wysyłki ani operacji na dokumentach: mogłyby powstać duplikaty. Właściciel systemu powinien zweryfikować status operacji.",
+            "queue": "IT_SUPPORT",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ]
+    },
+    {
+      "playbook_id": "PAYMENTS",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "PAYMENTS"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu płatności, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu płatności? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "PAYMENTS_HANDOFF",
+          "conditions": [],
+          "escalation": {
+            "reason_code": "PAYMENTS_HANDOFF",
+            "reason": "Payments handoff",
+            "reply": "Zapisano lokalne zgłoszenie problemu z płatnością do weryfikacji. Nie ponawiaj obciążenia ani nie zmieniaj statusu zamówienia. Nie podawaj numeru karty, PIN-u, kodu BLIK ani danych klienta.",
+            "queue": "PAYMENTS",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ]
+    },
+    {
+      "playbook_id": "BUSINESS_DATA",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "BUSINESS_DATA"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu danych biznesowych, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu danych biznesowych? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "BUSINESS_DATA_HANDOFF",
+          "conditions": [],
+          "escalation": {
+            "reason_code": "BUSINESS_DATA_HANDOFF",
+            "reason": "Business data handoff",
+            "reply": "Zapisano lokalne zgłoszenie rozbieżności danych lub operacji biznesowej. Weryfikację powinien wykonać właściciel systemu. Nie koryguj samodzielnie cen, płac, stanów ani dokumentów i nie wklejaj danych osobowych.",
+            "queue": "IT_SUPPORT",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ]
+    },
+    {
+      "playbook_id": "RECOVERY",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "RECOVERY"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu pliku lub kopii zapasowej, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu pliku lub kopii zapasowej? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "RECOVERY_HANDOFF",
+          "conditions": [],
+          "escalation": {
+            "reason_code": "RECOVERY_HANDOFF",
+            "reason": "Recovery handoff",
+            "reply": "Zapisano zgłoszenie dotyczące danych lub kopii zapasowej. Nie nadpisuj plików i nie instaluj narzędzi odzyskiwania. Możliwość odzyskania danych musi sprawdzić IT; nie mogę jej zagwarantować.",
+            "queue": "DATA_RECOVERY",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ]
+    },
+    {
+      "playbook_id": "SECURITY_REVIEW",
+      "version": "1",
+      "categories": [
+        "HARDWARE",
+        "NETWORK",
+        "SOFTWARE",
+        "EMAIL",
+        "ACCOUNT_ACCESS",
+        "OTHER"
+      ],
+      "aliases": [
+        "SECURITY_REVIEW"
+      ],
+      "fact_definitions": {
+        "error_message": {
+          "description": "Podany komunikat lub kod błędu bezpieczeństwa, bez danych osobowych, haseł, kodów płatności i zawartości dokumentów.",
+          "value_type": "string"
+        },
+        "other_users_affected": {
+          "description": "Czy użytkownik wie, że ten sam problem dotyczy innych osób. Nie zgaduj; nie wymaga sprawdzania cudzych kont.",
+          "value_type": "boolean"
+        }
+      },
+      "fallback_facts": [
+        "error_message",
+        "other_users_affected"
+      ],
+      "questions": {
+        "error_message": "Czy widzisz komunikat lub kod błędu bezpieczeństwa? Podaj tylko sam komunikat, bez danych osób, dokumentów i kodów uwierzytelniających. Jeśli go nie ma lub nie wiesz, napisz to.",
+        "other_users_affected": "Czy wiesz, że ten sam problem występuje również u innych osób? Nie sprawdzaj cudzych kont; jeśli nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "other_users_affected"
+      ],
+      "allow_knowledge": false,
+      "rules": [
+        {
+          "rule_id": "SECURITY_REVIEW_HANDOFF",
+          "conditions": [],
+          "escalation": {
+            "reason_code": "SECURITY_REVIEW_HANDOFF",
+            "reason": "Security review handoff",
+            "reply": "Zapisano zgłoszenie wymagające weryfikacji bezpieczeństwa. Nie podawaj danych poufnych ani kodów; nie wykonuj dalszych prób naprawy bez instrukcji zespołu bezpieczeństwa.",
+            "queue": "SECURITY",
+            "ticket_kind": "INCIDENT"
+          }
+        }
+      ]
+    },
+    {
+      "playbook_id": "ACCOUNT_ACCESS",
+      "categories": [
+        "ACCOUNT_ACCESS",
+        "SOFTWARE",
+        "OTHER"
+      ],
+      "aliases": [
+        "ACCOUNT_ACCESS"
+      ],
+      "fallback_facts": [
+        "login_problem",
+        "error_message"
+      ],
+      "rules": [
+        {
+          "rule_id": "ACCOUNT_RECOVERY_REQUIRED",
+          "conditions": [
+            {
+              "keys": [
+                "password_expired",
+                "account_locked"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "system sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów.",
+            "reason_code": "ACCOUNT_RECOVERY_REQUIRED",
+            "ticket_kind": "ACCESS_REQUEST",
+            "queue": "ACCESS"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "CURRENT_PASSWORD_UNKNOWN",
+          "conditions": [
+            {
+              "keys": [
+                "current_password"
+              ],
+              "values": [
+                false
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "system sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów.",
+            "reason_code": "CURRENT_PASSWORD_UNKNOWN",
+            "ticket_kind": "ACCESS_REQUEST",
+            "queue": "ACCESS"
+          },
+          "exhausted_escalation": null
+        },
+        {
+          "rule_id": "WRONG_ACCOUNT_REVIEW",
+          "conditions": [
+            {
+              "keys": [
+                "correct_account"
+              ],
+              "values": [
+                false
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason_code": "ACCOUNT_SELECTION_REQUIRED",
+            "reason": "Account selection required",
+            "reply": "Zapisano zgłoszenie dostępu. Właściciel systemu pomoże ustalić właściwe konto. Nie korzystaj z kont innej osoby i nie podawaj hasła ani kodów.",
+            "queue": "ACCESS",
+            "ticket_kind": "ACCESS_REQUEST"
+          }
+        },
+        {
+          "rule_id": "SIGN_IN_BASICS",
+          "conditions": [
+            {
+              "keys": [
+                "login_problem"
+              ],
+              "values": [
+                true
+              ],
+              "contains": false
+            }
+          ],
+          "required_facts": [
+            "correct_account",
+            "current_password",
+            "password_expired",
+            "other_device_available",
+            "other_device_works",
+            "error_message"
+          ],
+          "actions": [],
+          "ask_missing_facts": true,
+          "escalation": null,
+          "exhausted_escalation": {
+            "reason": "system sign-in checks exhausted or account recovery requires IT.",
+            "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów."
+          }
+        }
+      ],
+      "fact_conditions": {
+        "other_device_works": [
+          {
+            "keys": [
+              "other_device_available"
+            ],
+            "values": [
+              true
+            ],
+            "contains": false
+          }
+        ]
+      },
+      "questions": {
+        "login_problem": "Czy problem polega na tym, że nie możesz zalogować się do systemu?",
+        "correct_account": "Sprawdź konto widoczne w oknie logowania do systemu. Czy jest to Twoje właściwe konto firmowe? Nie podawaj tutaj loginu ani hasła.",
+        "current_password": "Czy używasz aktualnego hasła do tego konta, uwzględniając jego ostatnią zmianę? Nie wpisuj tutaj hasła i nie próbuj zgadywać kolejnych haseł.",
+        "password_expired": "Sprawdź komunikat logowania. Czy jest w nim napisane, że hasło wygasło? Jeśli nie możesz tego ustalić, napisz to; nie zgaduj.",
+        "other_device_available": "Czy masz dostęp do innego urządzenia firmowego, na którym wolno Ci korzystać z systemu? Nie używaj konta innej osoby.",
+        "other_device_works": "Sprawdź, czy otworzysz system na tym drugim urządzeniu firmowym na swoim koncie. Jeśli wymaga logowania, wykonaj najwyżej jedną próbę, tylko gdy znasz aktualne hasło. Nie korzystaj z linków w podejrzanych wiadomościach; przy komunikacie o blokadzie lub wygaśnięciu hasła zatrzymaj się i napisz to. Czy system działa na tym drugim urządzeniu?",
+        "error_message": "Jaki dokładnie komunikat pokazuje system? Podaj sam komunikat, bez hasła, kodów MFA ani tokenów."
+      },
+      "clarification_questions": {},
+      "boolean_facts": [
+        "login_problem",
+        "correct_account",
+        "current_password",
+        "password_expired",
+        "other_device_available",
+        "other_device_works"
+      ],
+      "version": "2",
+      "fact_definitions": {
+        "login_problem": {
+          "description": "Czy problem dotyczy logowania do systemu. Nie utożsamiaj braku wysyłania poczty z problemem logowania.",
+          "value_type": "boolean"
+        },
+        "correct_account": {
+          "description": "Czy użytkownik sprawdził, że w logowaniu do systemu wybrano jego właściwe konto firmowe.",
+          "value_type": "boolean"
+        },
+        "current_password": {
+          "description": "Czy użytkownik potwierdza, że zna i używa aktualnego hasła, uwzględniając ostatnią zmianę. Nie zapisuj jego treści. Sam błąd logowania nie oznacza false.",
+          "value_type": "boolean"
+        },
+        "password_expired": {
+          "description": "Czy komunikat logowania wyraźnie mówi o wygaśnięciu hasła. Nie wnioskuj tego z samego błędu logowania.",
+          "value_type": "boolean"
+        },
+        "account_locked": {
+          "description": "Czy komunikat mówi, że konto jest zablokowane. Nie wnioskuj blokady z samej odmowy logowania.",
+          "value_type": "boolean"
+        },
+        "other_device_available": {
+          "description": "Czy dostępne jest inne urządzenie firmowe dopuszczone do korzystania z poczty. Brak urządzenia nie oznacza nieudanego testu.",
+          "value_type": "boolean"
+        },
+        "other_device_works": {
+          "description": "Czy to samo konto otwiera systemu na innym dozwolonym urządzeniu firmowym. To wynik porównawczy, nie rozwiązanie problemu na pierwszym komputerze.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Jaki komunikat logowania widzi użytkownik, bez haseł, kodów i tokenów.",
+          "value_type": "string"
+        }
+      }
+    },
+    {
+      "playbook_id": "MONITOR",
+      "version": "1",
+      "categories": [
+        "HARDWARE"
+      ],
+      "aliases": [
+        "MONITOR",
+        "MONITORA",
+        "MONITOREM",
+        "EKRAN",
+        "DISPLAY"
+      ],
+      "fact_definitions": {
+        "powered": {
+          "description": "Czy monitor jest włączony. Widoczny komunikat No signal na monitorze dowodzi zasilania, ale nie obrazu z komputera. Samo ogólne zdanie Nie działa monitor NIE ustala zasilania; wtedy pomiń ten fakt.",
+          "value_type": "boolean"
+        },
+        "error_message": {
+          "description": "Komunikat na monitorze, np. NO SIGNAL / brak sygnału.",
+          "value_type": "string"
+        }
+      },
+      "fallback_facts": [
+        "powered",
+        "error_message"
+      ],
+      "questions": {
+        "powered": "Czy monitor jest włączony — świeci kontrolka lub widać komunikat na jego ekranie?",
+        "error_message": "Czy na monitorze jest komunikat, np. „No signal” / „Brak sygnału”? Jeśli ekran jest czarny lub nie wiesz, napisz to."
+      },
+      "boolean_facts": [
+        "powered"
+      ],
+      "rules": [
+        {
+          "rule_id": "POWER",
+          "conditions": [
+            {
+              "keys": [
+                "powered"
+              ],
+              "values": [
+                false
+              ]
+            }
+          ],
+          "actions": [
+            "DISPLAY_POWER_1",
+            "DISPLAY_INPUT_1",
+            "DISPLAY_CABLE_1"
+          ]
+        },
+        {
+          "rule_id": "NO_SIGNAL",
+          "conditions": [
+            {
+              "keys": [
+                "error_message"
+              ],
+              "values": [
+                "NO SIGNAL",
+                "BRAK SYGNAŁU"
+              ]
+            }
+          ],
+          "actions": [
+            "DISPLAY_INPUT_1",
+            "DISPLAY_CABLE_1"
+          ],
+          "ask_missing_facts": false
+        },
+        {
+          "rule_id": "POWERED",
+          "conditions": [
+            {
+              "keys": [
+                "powered"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "actions": [
+            "DISPLAY_INPUT_1",
+            "DISPLAY_CABLE_1"
+          ]
+        },
+        {
+          "rule_id": "LIMIT",
+          "conditions": [],
+          "actions": [],
+          "exhausted_escalation": {
+            "reason": "Approved local display checks exhausted or unavailable.",
+            "reply": "Utworzyłem zgłoszenie sprzętowe do IT z wynikami sprawdzeń monitora. Nie rozbieraj urządzenia i nie instaluj sterowników samodzielnie.",
+            "queue": "EQUIPMENT",
+            "reason_code": "DISPLAY_CHECKS_EXHAUSTED"
+          }
+        }
+      ],
+      "extraction_reasoning": true,
+      "resolution_goal": "Monitor pokazuje poprawny obraz z komputera użytkownika. Samo włączenie kontrolki lub No signal nie jest rozwiązaniem.",
+      "unresolved_conditions": [
+        {
+          "keys": [
+            "powered"
+          ],
+          "values": [
+            false
+          ]
+        },
+        {
+          "keys": [
+            "error_message"
+          ],
+          "values": [
+            "NO SIGNAL",
+            "BRAK SYGNAŁU"
+          ],
+          "contains": true
+        }
+      ]
+    }
+  ]
+}

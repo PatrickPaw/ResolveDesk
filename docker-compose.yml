@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: resolvedesk-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-resolvedesk}
+      POSTGRES_USER: ${POSTGRES_USER:-resolvedesk}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
+    volumes:
+      - resolvedesk_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-resolvedesk} -d ${POSTGRES_DB:-resolvedesk}"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: resolvedesk-backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-resolvedesk}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:-resolvedesk}
+      OLLAMA_HOST: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3:8b}
+      OLLAMA_THINK: ${OLLAMA_THINK:-true}
+      AI_CALL_TIMEOUT_SECONDS: ${AI_CALL_TIMEOUT_SECONDS:-45}
+      AI_TURN_TIMEOUT_SECONDS: ${AI_TURN_TIMEOUT_SECONDS:-90}
+      PASSWORD_RESET_DEMO_ENABLED: ${PASSWORD_RESET_DEMO_ENABLED:-false}
+      EXPLAINABILITY_TRACE_ENABLED: ${EXPLAINABILITY_TRACE_ENABLED:-false}
+      RESOLVEDESK_ACCESS_MODE: ${RESOLVEDESK_ACCESS_MODE:-demo}
+      RESOLVEDESK_ACCESS_TOKENS: ${RESOLVEDESK_ACCESS_TOKENS:-[]}
+      OLLAMA_EMBEDDING_MODEL: ${OLLAMA_EMBEDDING_MODEL:-nomic-embed-text-v2-moe}
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: resolvedesk-frontend
+    ports:
+      - "127.0.0.1:${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  resolvedesk_postgres_data:

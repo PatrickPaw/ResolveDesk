@@ -1,0 +1,301 @@
+{
+  "PRINTING_RECONNECT_CABLE_1": {
+    "action_id": "PRINTING_RECONNECT_CABLE_1",
+    "instruction": "Wypięty kabel może powodować brak połączenia. Jeśli rozpoznajesz jego pierwotne gniazdo przy drukarce lub komputerze, włóż wtyczkę z powrotem do tego samego gniazda, bez używania siły. Nie zgaduj portu, nie odłączaj innych kabli i nie zmieniaj połączeń w szafie sieciowej. Jeśli kabel jest uszkodzony lub nie wiesz, gdzie był podłączony, zatrzymaj się i napisz to. Po podłączeniu poczekaj na połączenie i spróbuj wydrukować dokument.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_CHECK_CABLE_1": {
+    "action_id": "PRINTING_CHECK_CABLE_1",
+    "instruction": "To ważna wskazówka — sprawdźmy kabel. Obejrzyj jego dostępne końce przy drukarce lub komputerze, bez odłączania innych przewodów. Napisz, czy wtyczka faktycznie jest wypięta i przy którym urządzeniu. Jeśli nie możesz tego bezpiecznie sprawdzić, napisz to; nie zgaduj gniazda.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_PAPER_JAM_1": {
+    "action_id": "PRINTING_PAPER_JAM_1",
+    "instruction": "Otwórz pokrywę lub szufladę wskazaną przez drukarkę jako miejsce zacięcia i usuń tylko widoczny, luźny papier. Nie używaj siły i nie rozbieraj drukarki.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_PAPER_JAM_2": {
+    "action_id": "PRINTING_PAPER_JAM_2",
+    "instruction": "Sprawdź łatwo dostępny fragment toru papieru i zobacz, czy nie zostały w nim małe kawałki papieru. Usuń tylko to, co można wyjąć bez rozbierania urządzenia.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_PAPER_JAM_3": {
+    "action_id": "PRINTING_PAPER_JAM_3",
+    "instruction": "Zamknij wszystkie pokrywy i szuflady, poczekaj aż drukarka wróci do stanu gotowości i spróbuj ponownie wydrukować dokument.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_NO_PAPER_1": {
+    "action_id": "PRINTING_NO_PAPER_1",
+    "instruction": "Sprawdź podajnik papieru i uzupełnij go odpowiednim papierem, jeśli jest pusty.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_NO_PAPER_2": {
+    "action_id": "PRINTING_NO_PAPER_2",
+    "instruction": "Upewnij się, że podajnik jest prawidłowo wsunięty i spróbuj wydrukować dokument ponownie.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_TONER_1": {
+    "action_id": "PRINTING_TONER_1",
+    "instruction": "Sprawdź model drukarki i upewnij się, że dostępny toner jest przeznaczony dokładnie do tego urządzenia.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_TONER_2": {
+    "action_id": "PRINTING_TONER_2",
+    "instruction": "Jeśli użytkownicy w Twojej firmie mogą samodzielnie wymieniać toner, wymień go zgodnie z oznaczeniami na urządzeniu. Jeśli wymagana jest obsługa IT, nie rozbieraj drukarki.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_POWER_ON_1": {
+    "action_id": "PRINTING_POWER_ON_1",
+    "instruction": "Włącz drukarkę przyciskiem zasilania i poczekaj, aż zakończy uruchamianie.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_NOT_VISIBLE_1": {
+    "action_id": "PRINTING_NOT_VISIBLE_1",
+    "instruction": "Otwórz ustawienia drukarek w systemie i użyj opcji wyszukania lub dodania drukarki, aby sprawdzić, czy urządzenie zostanie wykryte.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_OFFLINE_1": {
+    "action_id": "PRINTING_OFFLINE_1",
+    "instruction": "Wyłącz drukarkę przyciskiem zasilania, odczekaj kilka sekund, włącz ją ponownie i poczekaj, aż zakończy uruchamianie.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "PRINTING_OFFLINE_2": {
+    "action_id": "PRINTING_OFFLINE_2",
+    "instruction": "Po ponownym uruchomieniu sprawdź status drukarki i spróbuj wydrukować dokument jeszcze raz.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "NETWORK_RESEAT_ETHERNET_1": {
+    "action_id": "NETWORK_RESEAT_ETHERNET_1",
+    "instruction": "Wyjmij wtyczkę kabla sieciowego (Ethernet) tylko ze swojego komputera lub własnej stacji dokującej i włóż ją ponownie do tego samego gniazda, aż zatrzask się zamknie. Nie używaj siły. Jeśli wtyczka jest już wypięta, podłącz ją tylko wtedy, gdy znasz jej pierwotne gniazdo. Nie odłączaj kabli ani zasilania routera lub switcha i nie restartuj tych urządzeń. Jeśli nie rozpoznajesz kabla, jest uszkodzony lub nie masz dostępu do gniazda, zatrzymaj się i napisz to. Poczekaj na połączenie i sprawdź dostęp do internetu. Czy internet na tym komputerze już działa?",
+    "failure_escalation": {
+      "reason": "Employee-safe network checks exhausted or unavailable; infrastructure work requires IT.",
+      "reply": "Dalsza diagnostyka wymaga IT. Utworzyłem zgłoszenie z zebranymi informacjami. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — mogłoby to przerwać pracę innych osób."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "NETWORK_WIFI_REFRESH_1": {
+    "action_id": "NETWORK_WIFI_REFRESH_1",
+    "instruction": "Jeśli firma pozwala Ci obsługiwać Wi-Fi, sprawdź na swoim komputerze, czy nie jest włączony tryb samolotowy; wyłącz go. Włącz Wi-Fi, a jeśli było włączone, wyłącz je na chwilę i włącz ponownie. Nie zmieniaj ustawień routera ani punktu dostępowego. Czy firmowa sieć pojawiła się na liście?",
+    "failure_escalation": null,
+    "blocked_escalation": {
+      "reason": "Employee-safe network checks exhausted or unavailable; infrastructure work requires IT.",
+      "reply": "Dalsza diagnostyka wymaga IT. Utworzyłem zgłoszenie z zebranymi informacjami. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — mogłoby to przerwać pracę innych osób."
+    },
+    "skip_conditions": [],
+    "result_fact": "network_visible"
+  },
+  "VPN_CLIENT_RESTART_1": {
+    "action_id": "VPN_CLIENT_RESTART_1",
+    "instruction": "Zamknij aplikację VPN, jeśli jej proces jest nadal widoczny, a następnie uruchom ją ponownie z normalnego skrótu firmowego.",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": []
+  },
+  "VPN_RECONNECT_1": {
+    "action_id": "VPN_RECONNECT_1",
+    "instruction": "Zapisz pracę zależną od VPN. Zamknij firmową aplikację VPN, uruchom ją ponownie i wykonaj jedną próbę połączenia, tylko jeśli znasz aktualne hasło. Przy komunikacie o blokadzie, wygaśnięciu hasła lub nieoczekiwanym MFA przerwij. Nie zmieniaj serwera ani konfiguracji i nie wpisuj tutaj hasła lub kodów. Czy dostęp przez VPN już działa?",
+    "failure_escalation": null,
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "OUTLOOK_CORRECT_ACCOUNT_1": {
+    "action_id": "OUTLOOK_CORRECT_ACCOUNT_1",
+    "instruction": "W oknie logowania do Outlooka wybierz swoje właściwe konto firmowe. Nie usuwaj profilu ani konta z aplikacji. Wykonaj najwyżej jedną próbę logowania, tylko jeśli znasz aktualne hasło. Przy komunikacie o blokadzie lub wygaśnięciu hasła zatrzymaj się. Nie podawaj tutaj hasła ani kodów. Czy możesz już otworzyć Outlooka na tym komputerze?",
+    "failure_escalation": {
+      "reason": "Outlook sign-in checks exhausted or account recovery requires IT.",
+      "reply": "Przekazałem problem logowania do IT wraz z wynikami sprawdzeń. Nie próbuj kolejnych haseł, nie usuwaj profilu pocztowego i nie wyłączaj MFA. Nie wpisuj tutaj hasła ani kodów."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "MOUSE_USB_RECONNECT_1": {
+    "action_id": "MOUSE_USB_RECONNECT_1",
+    "instruction": "Sprawdź połączenie USB urządzenia (mysz). Wyjmij i włóż z powrotem do tego samego gniazda przy swoim komputerze jego wtyczkę USB albo jego własny odbiornik USB — zależnie od ustalonego rodzaju połączenia. Nie odłączaj innych urządzeń ani wspólnej stacji/huba. Nie zgaduj, który odbiornik jest właściwy, i nie używaj siły. Jeśli nie rozpoznajesz wtyczki lub nie masz do niej dostępu, zatrzymaj się i napisz to. Poczekaj chwilę. Czy urządzenie już działa?",
+    "failure_escalation": null,
+    "blocked_escalation": {
+      "reason": "Safe mouse connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "MOUSE_USB_PORT_1": {
+    "action_id": "MOUSE_USB_PORT_1",
+    "instruction": "Jeśli Twój komputer ma inne wolne gniazdo USB pasujące do tej wtyczki, przełóż tylko wtyczkę tego urządzenia lub jego rozpoznany odbiornik do tego gniazda. Nie odłączaj niczego, aby zwolnić port, nie używaj siły i nie przepinaj wspólnej stacji dokującej. Jeśli brak odpowiedniego wolnego portu, napisz to. Czy po tej próbie urządzenie działa?",
+    "failure_escalation": {
+      "reason": "Safe mouse connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "MOUSE_POWER_1": {
+    "action_id": "MOUSE_POWER_1",
+    "instruction": "Sprawdź zasilanie urządzenia (mysz). Jeśli ma przełącznik zasilania, ustaw go w pozycji włączonej. Jeśli korzysta z wymiennych baterii i ma łatwo dostępną klapkę, sprawdź ich ułożenie lub użyj sprawnych baterii właściwego typu. Wbudowanego akumulatora nie wyjmuj; jeśli jest rozładowany, użyj tylko przeznaczonego do urządzenia, sprawnego kabla ładowania. Nie rozbieraj obudowy. Przy zalaniu, uszkodzeniu lub przegrzewaniu przerwij. Czy urządzenie na tym komputerze już działa?",
+    "failure_escalation": null,
+    "blocked_escalation": {
+      "reason": "Safe mouse connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "skip_conditions": [
+      {
+        "keys": [
+          "power_checked"
+        ],
+        "values": [
+          true
+        ],
+        "contains": false
+      }
+    ],
+    "asks_resolution": true
+  },
+  "MOUSE_BLUETOOTH_CHECK_1": {
+    "action_id": "MOUSE_BLUETOOTH_CHECK_1",
+    "instruction": "Jeśli możesz obsłużyć ustawienia swojego komputera, sprawdź w nich Bluetooth oraz status tego urządzenia. Jeśli Bluetooth jest wyłączony i firma pozwala go włączyć, włącz go. Dla już sparowanego, rozpoznanego urządzenia użyj opcji połączenia, jeśli jest dostępna. Nie wyłączaj działającego Bluetooth, nie usuwaj parowania i nie zmieniaj innych urządzeń. Gdy sprzętu nie ma na liście, ustawienia są zablokowane lub nie możesz ich obsłużyć, zatrzymaj się i napisz to. Czy urządzenie już działa?",
+    "failure_escalation": {
+      "reason": "Safe mouse connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "KEYBOARD_USB_RECONNECT_1": {
+    "action_id": "KEYBOARD_USB_RECONNECT_1",
+    "instruction": "Sprawdź połączenie USB urządzenia (klawiatura). Wyjmij i włóż z powrotem do tego samego gniazda przy swoim komputerze jego wtyczkę USB albo jego własny odbiornik USB — zależnie od ustalonego rodzaju połączenia. Nie odłączaj innych urządzeń ani wspólnej stacji/huba. Nie zgaduj, który odbiornik jest właściwy, i nie używaj siły. Jeśli nie rozpoznajesz wtyczki lub nie masz do niej dostępu, zatrzymaj się i napisz to. Poczekaj chwilę. Czy urządzenie już działa?",
+    "failure_escalation": null,
+    "blocked_escalation": {
+      "reason": "Safe keyboard connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "KEYBOARD_USB_PORT_1": {
+    "action_id": "KEYBOARD_USB_PORT_1",
+    "instruction": "Jeśli Twój komputer ma inne wolne gniazdo USB pasujące do tej wtyczki, przełóż tylko wtyczkę tego urządzenia lub jego rozpoznany odbiornik do tego gniazda. Nie odłączaj niczego, aby zwolnić port, nie używaj siły i nie przepinaj wspólnej stacji dokującej. Jeśli brak odpowiedniego wolnego portu, napisz to. Czy po tej próbie urządzenie działa?",
+    "failure_escalation": {
+      "reason": "Safe keyboard connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "KEYBOARD_POWER_1": {
+    "action_id": "KEYBOARD_POWER_1",
+    "instruction": "Sprawdź zasilanie urządzenia (klawiatura). Jeśli ma przełącznik zasilania, ustaw go w pozycji włączonej. Jeśli korzysta z wymiennych baterii i ma łatwo dostępną klapkę, sprawdź ich ułożenie lub użyj sprawnych baterii właściwego typu. Wbudowanego akumulatora nie wyjmuj; jeśli jest rozładowany, użyj tylko przeznaczonego do urządzenia, sprawnego kabla ładowania. Nie rozbieraj obudowy. Przy zalaniu, uszkodzeniu lub przegrzewaniu przerwij. Czy urządzenie na tym komputerze już działa?",
+    "failure_escalation": null,
+    "blocked_escalation": {
+      "reason": "Safe keyboard connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "skip_conditions": [
+      {
+        "keys": [
+          "power_checked"
+        ],
+        "values": [
+          true
+        ],
+        "contains": false
+      }
+    ],
+    "asks_resolution": true
+  },
+  "KEYBOARD_BLUETOOTH_CHECK_1": {
+    "action_id": "KEYBOARD_BLUETOOTH_CHECK_1",
+    "instruction": "Jeśli możesz obsłużyć ustawienia swojego komputera, sprawdź w nich Bluetooth oraz status tego urządzenia. Jeśli Bluetooth jest wyłączony i firma pozwala go włączyć, włącz go. Dla już sparowanego, rozpoznanego urządzenia użyj opcji połączenia, jeśli jest dostępna. Nie wyłączaj działającego Bluetooth, nie usuwaj parowania i nie zmieniaj innych urządzeń. Gdy sprzętu nie ma na liście, ustawienia są zablokowane lub nie możesz ich obsłużyć, zatrzymaj się i napisz to. Czy urządzenie już działa?",
+    "failure_escalation": {
+      "reason": "Safe keyboard connection/power checks exhausted or unavailable.",
+      "reply": "Przekazałem zgłoszenie sprzętowe do IT z wynikami sprawdzeń. Nie rozbieraj urządzenia, nie usuwaj sterowników i nie instaluj oprogramowania z nieznanych stron. Jeśli nie możesz korzystać z komputera, nie wykonuj dalszych prób."
+    },
+    "blocked_escalation": null,
+    "skip_conditions": [],
+    "asks_resolution": true
+  },
+  "NETWORK_WIFI_RECONNECT_1": {
+    "action_id": "NETWORK_WIFI_RECONNECT_1",
+    "instruction": "Na swoim komputerze rozłącz połączenie ze znaną firmową siecią Wi-Fi i połącz się z tą samą siecią ponownie, jeśli pozwala na to polityka firmy. Nie usuwaj zapisanej sieci, nie zmieniaj certyfikatów i nie wpisuj tutaj hasła. Nie restartuj routera ani punktu dostępowego. Jeśli system wymaga nieznanego hasła, nowych uprawnień lub zmiany konfiguracji, zatrzymaj się i napisz to. Sprawdź dostęp do internetu. Czy na tym komputerze już działa?",
+    "failure_escalation": {
+      "reason": "Employee-safe network checks exhausted or unavailable; infrastructure work requires IT.",
+      "reply": "Dalsza diagnostyka wymaga IT. Utworzyłem zgłoszenie z zebranymi informacjami. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — mogłoby to przerwać pracę innych osób."
+    },
+    "blocked_escalation": {
+      "reason": "Employee-safe network checks exhausted or unavailable; infrastructure work requires IT.",
+      "reply": "Dalsza diagnostyka wymaga IT. Utworzyłem zgłoszenie z zebranymi informacjami. Nie restartuj ani nie resetuj routera lub switcha i nie odłączaj ich kabli ani zasilania — mogłoby to przerwać pracę innych osób."
+    },
+    "asks_resolution": true
+  },
+  "DISPLAY_POWER_1": {
+    "action_id": "DISPLAY_POWER_1",
+    "instruction": "Sprawdź, czy monitor jest włączony przyciskiem zasilania i czy jego przewód zasilający jest prawidłowo podłączony do własnego monitora. Nie odłączaj wspólnych listew ani innych urządzeń. Przy uszkodzeniu, zapachu spalenizny lub braku bezpiecznego dostępu przerwij. Czy monitor pokazuje już obraz z Twojego komputera?",
+    "blocked_escalation": {
+      "reason": "Approved local display checks exhausted or unavailable.",
+      "reply": "Utworzyłem zgłoszenie sprzętowe do IT z wynikami sprawdzeń monitora. Nie rozbieraj urządzenia i nie instaluj sterowników samodzielnie.",
+      "queue": "EQUIPMENT",
+      "reason_code": "DISPLAY_CHECKS_EXHAUSTED"
+    },
+    "asks_resolution": true
+  },
+  "DISPLAY_INPUT_1": {
+    "action_id": "DISPLAY_INPUT_1",
+    "instruction": "Wybudź swój komputer klawiaturą lub myszą. W menu monitora wybierz źródło obrazu (Input/Source) zgodne z przewodem podłączonym do komputera, np. HDMI albo DisplayPort (DP), zamiast nieużywanego VGA. Nie zmieniaj pozostałych ustawień. Jeśli nie rozpoznajesz złącza, napisz to. Czy pojawił się obraz z komputera?",
+    "blocked_escalation": {
+      "reason": "Approved local display checks exhausted or unavailable.",
+      "reply": "Utworzyłem zgłoszenie sprzętowe do IT z wynikami sprawdzeń monitora. Nie rozbieraj urządzenia i nie instaluj sterowników samodzielnie.",
+      "queue": "EQUIPMENT",
+      "reason_code": "DISPLAY_CHECKS_EXHAUSTED"
+    },
+    "asks_resolution": true
+  },
+  "DISPLAY_CABLE_1": {
+    "action_id": "DISPLAY_CABLE_1",
+    "instruction": "Sprawdź dostępne końce przewodu obrazu między własnym monitorem a komputerem lub własną stacją dokującą. Popraw połączenie w tych samych gniazdach; nie ciągnij za kabel, nie używaj siły i nie odłączaj innych urządzeń. Jeśli przewód jest uszkodzony albo nie rozpoznajesz gniazda, zatrzymaj się. Czy monitor pokazuje już obraz z komputera?",
+    "blocked_escalation": {
+      "reason": "Approved local display checks exhausted or unavailable.",
+      "reply": "Utworzyłem zgłoszenie sprzętowe do IT z wynikami sprawdzeń monitora. Nie rozbieraj urządzenia i nie instaluj sterowników samodzielnie.",
+      "queue": "EQUIPMENT",
+      "reason_code": "DISPLAY_CHECKS_EXHAUSTED"
+    },
+    "failure_escalation": {
+      "reason": "Approved local display checks exhausted or unavailable.",
+      "reply": "Utworzyłem zgłoszenie sprzętowe do IT z wynikami sprawdzeń monitora. Nie rozbieraj urządzenia i nie instaluj sterowników samodzielnie.",
+      "queue": "EQUIPMENT",
+      "reason_code": "DISPLAY_CHECKS_EXHAUSTED"
+    },
+    "asks_resolution": true
+  }
+}
