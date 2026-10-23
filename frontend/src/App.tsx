@@ -168,22 +168,8 @@ function App() {
 
   return (
     <div className="app">
-      <header className="topbar">
-        <div className="brand">
-          <div className="brand-logo">
-            <img src="/favicon.png" alt="Pomoc IT" />
-          </div>
-
-          <div className="brand-text">
-            <span className="brand-name">Pomoc IT<br /></span>
-            <span className="brand-subtitle">Wsparcie techniczne</span>
-          </div>
-        </div>
-
-      </header>
-
       <main className="page">
-        <section className="chat">
+        <section className="chat" aria-label="Rozmowa z asystentem IT">
           <header className="chat-header">
             <div className="assistant-avatar">
               <span>AI</span>
@@ -192,7 +178,7 @@ function App() {
             <div className="assistant-info">
               <strong>Asystent IT</strong>
 
-              <div className="assistant-status">
+              <div className="assistant-status" role="status">
                 <span className="status-dot" />
                 <span>{getStatusText()}</span>
               </div>
@@ -275,6 +261,7 @@ function App() {
                 >
                   <textarea
                     className="message-input"
+                    aria-label="Wiadomość do asystenta IT"
                     placeholder="Opisz swój problem..."
                     rows={1}
                     maxLength={10000}
