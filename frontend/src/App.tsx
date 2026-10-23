@@ -172,7 +172,7 @@ function App() {
         <section className="chat" aria-label="Rozmowa z asystentem IT">
           <header className="chat-header">
             <div className="assistant-avatar">
-              <span>AI</span>
+              <img src="/assistant-avatar.png" alt="Wirtualna asystentka IT" />
             </div>
 
             <div className="assistant-info">
