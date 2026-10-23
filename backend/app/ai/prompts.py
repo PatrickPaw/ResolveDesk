@@ -153,14 +153,29 @@ For EACH returned fact include evidence[fact_key]: an EXACT quote from user_mess
 If no supporting quote exists in this message, omit that fact. For 'Naprawiłem,
 wystarczyło przełączyć wejście sygnału z VGA na DP', never return an old No signal
 error from context: that message reports a fix, not a currently displayed error.
-Some handoff facts are required by the schema. Evaluate them explicitly; when not
-reported return null with NO evidence for that key. Never invent a yes/no value.
+Evaluate handoff facts when they are reported, but omit facts absent from the
+message. Never fill unreported booleans with false or use a general complaint as
+evidence for the absence of damage, queue issues or other symptoms.
 Do not copy unrelated old facts. Empty facts is valid when no new facts are given.
 False is not unknown. A completed step does not prove the original device works.
 
 Bind short answers to the actual last_question. If the user explicitly cannot
 establish the pending fact, return it as null. An unrelated clue must not clear
 that fact. New cable clues during printer support still concern the printer.
+When pending_fact is error_message and the user reports a displayed message,
+extract its text as error_message, with the original quote in evidence.
+For example, 'Widzę komunikat "Paper jam"' reports error_message='Paper jam'
+and evidence.error_message='Paper jam'. Do not return empty facts for a directly
+reported error. This applies to any reported error text, not only this example.
+error_message is a literal message displayed by a device or application, not
+the user's general complaint. 'Nie działa mi drukarka' supplies no error_message.
+For printing, distinguish the reported symptom from its cause. No output alone
+does not establish queue_stalled, hardware_damage, print_quality_problem or
+driver_or_permission_problem. Extract these only from a concrete observation:
+a job stuck in the queue, visible physical damage or abnormal mechanical noise,
+an actually produced poor-quality print, or an explicit driver/permission error.
+An ordinary paper jam is not by itself hardware damage. Do not retain corrected
+symptoms as new observations. A failed printer power check is not a physical hazard.
 
 For a hypothesis (maybe, chyba, podejrzewam), include its key in uncertain_facts
 and omit its value from facts. Do not assert a suspected cause as true.

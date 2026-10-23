@@ -241,3 +241,81 @@ def test_mouse_connection_choice_uses_no_ai(chat):
     calls=list(chat.ai.calls)
     assert "zasilanie" in chat.send("Przez bluetooth").reply
     assert chat.ai.calls == calls
+
+
+def test_printing_reported_jam_does_not_repeat_error_question(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"), facts={})
+    assert "komunikat" in chat.send("Nie działa mi drukarka").reply
+    chat.ai.expect(facts={"error_message": "Paper jam"})
+    response = chat.send('Widzę komunikat "Paper jam"')
+    assert response.stage == "RESOLUTION"
+    assert "luźny papier" in response.reply
+    assert chat.state().diagnostic.pending_question.target == "feedback"
+    assert chat.send("Nie").stage == "ESCALATED"
+
+
+def test_printing_no_paper_then_confirmed_print(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"),
+        facts={"error_message": "Out of paper"})
+    response = chat.send("Drukarka pokazuje Out of paper")
+    assert "podajnik" in response.reply and response.stage == "RESOLUTION"
+    assert chat.send("Tak").stage == "RESOLVED"
+
+
+def test_printing_completed_step_is_not_success(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"),
+        facts={"error_message": "Paper jam"})
+    chat.send("Zacięcie papieru")
+    chat.ai.expect(facts={}, feedback={"understood": True, "step_completed": True})
+    response = chat.send("Wyjąłem papier, co dalej?")
+    assert response.stage != "RESOLVED"
+    assert "Czy problem został rozwiązany" in response.reply
+
+
+@pytest.mark.parametrize("fact,reason", [
+    ("hardware_damage", "PRINTER_HARDWARE_DAMAGE"),
+    ("print_quality_problem", "PRINTER_PRINT_QUALITY"),
+    ("driver_or_permission_problem", "PRINTER_DRIVER_OR_ACCESS"),
+    ("queue_stalled", "PRINTER_QUEUE_REVIEW"),
+])
+def test_printing_specialist_faults_handoff_without_generic_repairs(chat, fact, reason):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"), facts={fact: True})
+    response = chat.send("Zgłaszam problem z drukarką")
+    assert response.stage == "ESCALATED"
+    assert not chat.state().resolution.attempts
+    with Session(chat.engine) as db:
+        assert db.scalar(select(TicketRecord)).routing["reason_code"] == reason
+
+
+def test_printing_suspected_damage_does_not_assert_hardware_failure(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"),
+        facts={"hardware_damage": True}, uncertain=["hardware_damage"])
+    assert chat.send("Może drukarka jest uszkodzona").stage != "ESCALATED"
+
+
+def test_printing_offline_checks_local_selection_without_device_restart(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"), facts={
+        "printer_powered": True, "printer_visible": True, "printer_status": "OFFLINE",
+        "connection_type": "USB", "cable_connected": True,
+    })
+    response = chat.send("Drukarka jest offline")
+    assert response.stage == "RESOLUTION" and "właściwą drukarkę" in response.reply
+    assert "Wyłącz drukarkę" not in response.reply
+    assert chat.send("Nie").stage == "ESCALATED"
+
+
+def test_printing_power_check_failure_stops_generic_repairs(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"),
+        facts={"printer_powered": False})
+    assert "Włącz drukarkę" in chat.send("Drukarka nie włącza się").reply
+    assert chat.send("Nie").stage == "ESCALATED"
+
+
+def test_printing_new_hardware_damage_interrupts_paper_check(chat):
+    chat.ai.expect(incident=incident("PRINTING", family="PRINTING"),
+        facts={"error_message": "Paper jam"})
+    chat.send("Paper jam na drukarce")
+    chat.ai.expect(facts={"hardware_damage": True})
+    response = chat.send("W środku jest urwany element")
+    assert response.stage == "ESCALATED"
+    assert len(chat.state().resolution.attempts) == 1

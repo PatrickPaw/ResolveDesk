@@ -1,10 +1,21 @@
 {
   "PRINTING_RECONNECT_CABLE_1": {
     "action_id": "PRINTING_RECONNECT_CABLE_1",
-    "instruction": "Wypięty kabel może powodować brak połączenia. Jeśli rozpoznajesz jego pierwotne gniazdo przy drukarce lub komputerze, włóż wtyczkę z powrotem do tego samego gniazda, bez używania siły. Nie zgaduj portu, nie odłączaj innych kabli i nie zmieniaj połączeń w szafie sieciowej. Jeśli kabel jest uszkodzony lub nie wiesz, gdzie był podłączony, zatrzymaj się i napisz to. Po podłączeniu poczekaj na połączenie i spróbuj wydrukować dokument.",
-    "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "instruction": "Wypięty kabel może powodować brak połączenia. Jeśli rozpoznajesz jego pierwotne gniazdo przy drukarce lub komputerze, włóż wtyczkę z powrotem do tego samego gniazda, bez używania siły. Nie zgaduj portu, nie odłączaj innych kabli i nie zmieniaj połączeń w szafie sieciowej. Jeśli kabel jest uszkodzony lub nie wiesz, gdzie był podłączony, zatrzymaj się i napisz to. Po podłączeniu poczekaj na połączenie i spróbuj wydrukować dokument. Czy drukowanie już działa?",
+    "failure_escalation": {
+      "reason": "Approved printer checks failed or unavailable",
+      "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+      "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+      "queue": "EQUIPMENT"
+    },
+    "blocked_escalation": {
+      "reason": "Approved printer checks failed or unavailable",
+      "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+      "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+      "queue": "EQUIPMENT"
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
   },
   "PRINTING_CHECK_CABLE_1": {
     "action_id": "PRINTING_CHECK_CABLE_1",
@@ -15,10 +26,23 @@
   },
   "PRINTING_PAPER_JAM_1": {
     "action_id": "PRINTING_PAPER_JAM_1",
-    "instruction": "Otwórz pokrywę lub szufladę wskazaną przez drukarkę jako miejsce zacięcia i usuń tylko widoczny, luźny papier. Nie używaj siły i nie rozbieraj drukarki.",
-    "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "instruction": "Jeśli firma pozwala usuwać proste zacięcia, skorzystaj wyłącznie z pokrywy lub szuflady wskazanej przez drukarkę i usuń tylko widoczny, luźny papier. Nie dotykaj gorących części, nie używaj narzędzi ani siły. Jeśli miejsce nie jest wskazane, papier stawia opór lub nie masz bezpiecznego dostępu, przerwij i napisz to. Po zamknięciu pokrywy, gdy komunikat zniknie, spróbuj wydrukować dokument bez danych poufnych. Czy drukowanie już działa?",
+    "failure_escalation": {
+      "reason": "Printer paper jam unresolved",
+      "reply": "Przekazałem do IT zgłoszenie zacięcia papieru. Nie wyciągaj papieru siłą, nie używaj narzędzi i nie rozbieraj drukarki. Nie ponawiaj kolejnych wydruków.",
+      "reason_code": "PRINTER_PAPER_JAM_UNRESOLVED",
+      "queue": "EQUIPMENT",
+      "safety_stop": false
+    },
+    "blocked_escalation": {
+      "reason": "Printer paper jam unresolved",
+      "reply": "Przekazałem do IT zgłoszenie zacięcia papieru. Nie wyciągaj papieru siłą, nie używaj narzędzi i nie rozbieraj drukarki. Nie ponawiaj kolejnych wydruków.",
+      "reason_code": "PRINTER_PAPER_JAM_UNRESOLVED",
+      "queue": "EQUIPMENT",
+      "safety_stop": false
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
   },
   "PRINTING_PAPER_JAM_2": {
     "action_id": "PRINTING_PAPER_JAM_2",
@@ -36,10 +60,23 @@
   },
   "PRINTING_NO_PAPER_1": {
     "action_id": "PRINTING_NO_PAPER_1",
-    "instruction": "Sprawdź podajnik papieru i uzupełnij go odpowiednim papierem, jeśli jest pusty.",
-    "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "instruction": "Jeśli firma pozwala uzupełniać papier, sprawdź wskazany podajnik i uzupełnij go papierem zgodnym z oznaczeniami urządzenia. Nie zmieniaj formatu ani nie używaj siły. Jeśli nie wiesz, jaki papier zastosować, zatrzymaj się i napisz to. Zamknij podajnik; gdy komunikat zniknie, spróbuj wydrukować dokument bez danych poufnych. Czy drukowanie już działa?",
+    "failure_escalation": {
+      "reason": "Printer paper feed unresolved",
+      "reply": "Przekazałem do IT problem podawania papieru. Nie reguluj mechanizmu ani nie rozbieraj drukarki.",
+      "reason_code": "PRINTER_PAPER_FEED_UNRESOLVED",
+      "queue": "EQUIPMENT",
+      "safety_stop": false
+    },
+    "blocked_escalation": {
+      "reason": "Printer paper feed unresolved",
+      "reply": "Przekazałem do IT problem podawania papieru. Nie reguluj mechanizmu ani nie rozbieraj drukarki.",
+      "reason_code": "PRINTER_PAPER_FEED_UNRESOLVED",
+      "queue": "EQUIPMENT",
+      "safety_stop": false
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
   },
   "PRINTING_NO_PAPER_2": {
     "action_id": "PRINTING_NO_PAPER_2",
@@ -64,24 +101,53 @@
   },
   "PRINTING_POWER_ON_1": {
     "action_id": "PRINTING_POWER_ON_1",
-    "instruction": "Włącz drukarkę przyciskiem zasilania i poczekaj, aż zakończy uruchamianie.",
+    "instruction": "Włącz drukarkę przyciskiem zasilania i poczekaj, aż zakończy uruchamianie. Nie otwieraj obudowy i nie odłączaj wspólnych listew. Jeśli urządzenie uruchomi się bez błędu, wykonaj jeden wydruk dokumentu bez danych poufnych. Jeśli nadal jest błąd, podaj jego treść. Czy drukowanie już działa?",
     "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "blocked_escalation": {
+      "reason": "Approved printer checks failed or unavailable",
+      "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+      "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+      "queue": "EQUIPMENT"
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
   },
   "PRINTING_NOT_VISIBLE_1": {
     "action_id": "PRINTING_NOT_VISIBLE_1",
-    "instruction": "Otwórz ustawienia drukarek w systemie i użyj opcji wyszukania lub dodania drukarki, aby sprawdzić, czy urządzenie zostanie wykryte.",
-    "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "instruction": "Otwórz ustawienia drukarek na swoim komputerze i użyj opcji wyszukania drukarki. Dodaj ją tylko, jeśli rozpoznajesz właściwe urządzenie i firma na to pozwala. Przy żądaniu instalacji, nowych uprawnień lub nieznanej konfiguracji zatrzymaj się. Jeśli drukarka jest dostępna, wykonaj jeden wydruk dokumentu bez danych poufnych. Czy drukowanie już działa?",
+    "failure_escalation": {
+      "reason": "Approved printer checks failed or unavailable",
+      "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+      "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+      "queue": "EQUIPMENT"
+    },
+    "blocked_escalation": {
+      "reason": "Approved printer checks failed or unavailable",
+      "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+      "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+      "queue": "EQUIPMENT"
+    },
+    "skip_conditions": [],
+    "asks_resolution": true
   },
   "PRINTING_OFFLINE_1": {
     "action_id": "PRINTING_OFFLINE_1",
-    "instruction": "Wyłącz drukarkę przyciskiem zasilania, odczekaj kilka sekund, włącz ją ponownie i poczekaj, aż zakończy uruchamianie.",
-    "failure_escalation": null,
-    "blocked_escalation": null,
-    "skip_conditions": []
+    "instruction": "Na swoim komputerze sprawdź, czy wybierasz właściwą drukarkę. Jeśli wybrana była inna, wybierz właściwą i wykonaj jeden wydruk dokumentu bez danych poufnych. Nie restartuj wspólnej drukarki, nie usuwaj cudzych zadań ani nie zmieniaj konfiguracji sieci. Jeśli wymaga to instalacji lub uprawnień administratora, zatrzymaj się. Czy drukowanie już działa?",
+    "failure_escalation": {
+      "reason": "Printer queue requires IT review",
+      "reply": "Przekazałem do IT problem kolejki drukowania. Nie usuwaj cudzych zadań, nie restartuj usługi drukowania i nie ponawiaj wielokrotnie wysyłania dokumentu.",
+      "reason_code": "PRINTER_QUEUE_REVIEW",
+      "queue": "EQUIPMENT"
+    },
+    "blocked_escalation": {
+      "reason": "Printer queue requires IT review",
+      "reply": "Przekazałem do IT problem kolejki drukowania. Nie usuwaj cudzych zadań, nie restartuj usługi drukowania i nie ponawiaj wielokrotnie wysyłania dokumentu.",
+      "reason_code": "PRINTER_QUEUE_REVIEW",
+      "queue": "EQUIPMENT"
+    },
+    "skip_conditions": [],
+    "scope": "OWN_DEVICE",
+    "asks_resolution": true
   },
   "PRINTING_OFFLINE_2": {
     "action_id": "PRINTING_OFFLINE_2",

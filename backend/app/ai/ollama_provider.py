@@ -194,9 +194,14 @@ class OllamaProvider:
         def validate(result):
             if (set(result.facts) | set(result.uncertain_facts)) - set(allowed_facts):
                 raise ValueError('Unknown diagnostic facts.')
+            evidence = {}
+            for key in result.facts:
+                span = exact_message_span(message, result.evidence.get(key, ""))
+                if span is not None:
+                    evidence[key] = span
             result.facts = {key: value for key, value in result.facts.items()
-                if result.evidence.get(key, "").strip()
-                and result.evidence[key] in message}
+                if key in evidence}
+            result.evidence = evidence
         response_format = DiagnosticAnalysis.model_json_schema()
         response_format['required'].extend(['facts', 'evidence'])
         playbook = next((p for p in get_catalog() if p.playbook_id == playbook_id), None)
@@ -208,16 +213,23 @@ class OllamaProvider:
                 value_schema['enum'] = list(spec.allowed_values)
             properties[key] = {'description': allowed_facts[key],
                                'anyOf': [value_schema, {'type': 'null'}]}
-        handoff_facts = sorted({key for rule in playbook.rules if rule.escalation
-            for condition in rule.conditions for key in condition.keys}) if playbook else []
         response_format['properties']['facts'] = {'type': 'object', 'properties': properties,
-            'required': handoff_facts, 'additionalProperties': False}
+            'additionalProperties': False}
+        response_format['properties']['evidence'] = {
+            'type': 'object',
+            'properties': {key: {'type': 'string', 'description':
+                'Quote from user_message supporting this fact; omit when not reported.'}
+                for key in allowed_facts},
+            'additionalProperties': False,
+        }
         response_format['properties']['uncertain_facts']['items'] = {'type': 'string', 'enum': list(allowed_facts)}
         return self._structured(DiagnosticAnalysis, DIAGNOSTIC_ANALYSIS_SYSTEM_PROMPT, {
             'incident': incident.model_dump(mode='json'),
             'diagnostic_state': diagnostic.model_dump(mode='json'),
             'playbook_id': playbook_id, 'allowed_facts': allowed_facts,
-            'last_question': last_question, 'user_message': message},
+            'last_question': last_question,
+            'pending_fact': diagnostic.pending_fact,
+            'user_message': message},
             think=bool(self.think and playbook and playbook.extraction_reasoning),
             validate=validate, response_format=response_format)
 

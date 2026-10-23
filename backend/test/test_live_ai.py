@@ -78,6 +78,17 @@ def test_printer_dialogue(chat):
     assert fifth.stage == "RESOLUTION" and "wyszukania" in fifth.reply
 
 
+def test_printer_reported_error_after_question(chat):
+    chat.ai = ReplayAI()
+    first = chat.send("Nie działa mi drukarka")
+    assert first.stage == "ACTIVE"
+    assert "error_message" not in chat.state().diagnostic.facts
+    response = chat.send('Widzę komunikat "Paper jam"')
+    assert response.stage == "RESOLUTION"
+    assert chat.state().diagnostic.facts["error_message"].upper() == "PAPER JAM"
+    assert chat.state().resolution.attempts[-1].step.source_id == "PLAYBOOK-PRINTING_PAPER_JAM_1"
+
+
 def test_battery_dialogue(chat):
     chat.ai=ReplayAI()
     assert "podłączone" in chat.send("Nie działa mi myszka").reply

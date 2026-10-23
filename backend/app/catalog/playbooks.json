@@ -20,6 +20,89 @@
       ],
       "rules": [
         {
+          "rule_id": "HARDWARE_DAMAGE",
+          "conditions": [
+            {
+              "keys": [
+                "hardware_damage"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Printer hardware damage",
+            "reply": "Zgłoszenie uszkodzenia drukarki przekazałem do IT. Nie rozbieraj urządzenia, nie wymuszaj ruchu mechanizmu i nie wykonuj kolejnych wydruków. Przy dymie, przegrzewaniu lub uszkodzeniu przewodu przerwij używanie urządzenia.",
+            "reason_code": "PRINTER_HARDWARE_DAMAGE",
+            "queue": "EQUIPMENT",
+            "safety_stop": true
+          }
+        },
+        {
+          "rule_id": "PRINT_QUALITY_PROBLEM",
+          "conditions": [
+            {
+              "keys": [
+                "print_quality_problem"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Printer print quality",
+            "reply": "Przekazałem do IT problem jakości wydruku. Nie uruchamiaj czyszczenia serwisowego ani kalibracji bez procedury dla tego modelu. Nie przesyłaj dokumentów zawierających dane poufne.",
+            "reason_code": "PRINTER_PRINT_QUALITY",
+            "queue": "EQUIPMENT",
+            "safety_stop": false
+          }
+        },
+        {
+          "rule_id": "DRIVER_OR_PERMISSION_PROBLEM",
+          "conditions": [
+            {
+              "keys": [
+                "driver_or_permission_problem"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Printer driver or access",
+            "reply": "Przekazałem do IT problem sterownika lub uprawnień drukarki. Nie instaluj sterowników z internetu i nie zmieniaj uprawnień ani ustawień zabezpieczeń.",
+            "reason_code": "PRINTER_DRIVER_OR_ACCESS",
+            "queue": "EQUIPMENT",
+            "safety_stop": false
+          }
+        },
+        {
+          "rule_id": "QUEUE_STALLED",
+          "conditions": [
+            {
+              "keys": [
+                "queue_stalled"
+              ],
+              "values": [
+                true
+              ]
+            }
+          ],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Printer queue requires IT review",
+            "reply": "Przekazałem do IT problem kolejki drukowania. Nie usuwaj cudzych zadań, nie restartuj usługi drukowania i nie ponawiaj wielokrotnie wysyłania dokumentu.",
+            "reason_code": "PRINTER_QUEUE_REVIEW",
+            "queue": "EQUIPMENT"
+          }
+        },
+        {
           "rule_id": "CONSUMABLE_DEPLETED",
           "conditions": [
             {
@@ -102,9 +185,7 @@
           ],
           "required_facts": [],
           "actions": [
-            "PRINTING_PAPER_JAM_1",
-            "PRINTING_PAPER_JAM_2",
-            "PRINTING_PAPER_JAM_3"
+            "PRINTING_PAPER_JAM_1"
           ],
           "ask_missing_facts": true,
           "escalation": null,
@@ -128,8 +209,7 @@
           ],
           "required_facts": [],
           "actions": [
-            "PRINTING_NO_PAPER_1",
-            "PRINTING_NO_PAPER_2"
+            "PRINTING_NO_PAPER_1"
           ],
           "ask_missing_facts": true,
           "escalation": null,
@@ -153,15 +233,16 @@
               "contains": true
             }
           ],
-          "required_facts": [
-            "device_name"
-          ],
-          "actions": [
-            "PRINTING_TONER_1",
-            "PRINTING_TONER_2"
-          ],
-          "ask_missing_facts": true,
-          "escalation": null,
+          "required_facts": [],
+          "actions": [],
+          "ask_missing_facts": false,
+          "escalation": {
+            "reason": "Printer consumable review",
+            "reply": "Przekazałem do IT zgłoszenie dotyczące tuszu lub tonera. Sam niski poziom nie przesądza o przyczynie awarii. Wymiana wkładu wymaga sprawdzenia modelu i firmowej procedury.",
+            "reason_code": "PRINTER_CONSUMABLE_REVIEW",
+            "queue": "EQUIPMENT",
+            "safety_stop": false
+          },
           "exhausted_escalation": null
         },
         {
@@ -183,7 +264,12 @@
           ],
           "ask_missing_facts": true,
           "escalation": null,
-          "exhausted_escalation": null
+          "exhausted_escalation": {
+            "reason": "Approved printer checks failed or unavailable",
+            "reply": "Przekazałem do IT zgłoszenie drukarki z wynikami sprawdzeń. Nie wykonuj kolejnych prób, nie instaluj sterowników i nie zmieniaj konfiguracji urządzenia.",
+            "reason_code": "PRINTER_CHECKS_EXHAUSTED",
+            "queue": "EQUIPMENT"
+          }
         },
         {
           "rule_id": "NOT_VISIBLE_WIRED",
@@ -292,7 +378,9 @@
                 "error_message"
               ],
               "values": [
-                "OFFLINE"
+                "OFFLINE",
+                "NIEDOSTĘPNA",
+                "NIEDOSTEPNA"
               ],
               "contains": true
             },
@@ -336,12 +424,17 @@
           ],
           "required_facts": [],
           "actions": [
-            "PRINTING_OFFLINE_1",
-            "PRINTING_OFFLINE_2"
+            "PRINTING_OFFLINE_1"
           ],
           "ask_missing_facts": true,
           "escalation": null,
-          "exhausted_escalation": null
+          "exhausted_escalation": {
+            "reason": "Printer queue review",
+            "reply": "Przekazałem do IT problem kolejki drukowania. Nie usuwaj cudzych zadań, nie restartuj usługi drukowania i nie ponawiaj wielokrotnie wysyłania dokumentu.",
+            "reason_code": "PRINTER_QUEUE_REVIEW",
+            "queue": "EQUIPMENT",
+            "safety_stop": false
+          }
         },
         {
           "rule_id": "OFFLINE_WIFI",
@@ -352,7 +445,9 @@
                 "error_message"
               ],
               "values": [
-                "OFFLINE"
+                "OFFLINE",
+                "NIEDOSTĘPNA",
+                "NIEDOSTEPNA"
               ],
               "contains": true
             },
@@ -396,12 +491,17 @@
           ],
           "required_facts": [],
           "actions": [
-            "PRINTING_OFFLINE_1",
-            "PRINTING_OFFLINE_2"
+            "PRINTING_OFFLINE_1"
           ],
           "ask_missing_facts": true,
           "escalation": null,
-          "exhausted_escalation": null
+          "exhausted_escalation": {
+            "reason": "Printer queue review",
+            "reply": "Przekazałem do IT problem kolejki drukowania. Nie usuwaj cudzych zadań, nie restartuj usługi drukowania i nie ponawiaj wielokrotnie wysyłania dokumentu.",
+            "reason_code": "PRINTER_QUEUE_REVIEW",
+            "queue": "EQUIPMENT",
+            "safety_stop": false
+          }
         }
       ],
       "fact_conditions": {
@@ -441,14 +541,15 @@
         "printer_powered": "Czy drukarka jest włączona i świeci jej kontrolka zasilania?"
       },
       "clarification_questions": {
-        "printer_visible": "Pytam o sam wpis na liście, nie o gotowość do druku. Czy widzisz nazwę tej drukarki, także gdy jest oznaczona jako offline lub niedostępna?"
+        "printer_visible": "Pytam o sam wpis na liście, nie o gotowość do druku. Czy widzisz nazwę tej drukarki, także gdy jest oznaczona jako offline lub niedostępna?",
+        "error_message": "Chodzi o dokładny napis lub kod na drukarce, np. „Paper jam”. Przepisz sam komunikat; jeśli go nie ma lub nie możesz odczytać, napisz to."
       },
       "boolean_facts": [
         "printer_powered",
         "printer_visible",
         "wifi_connected"
       ],
-      "version": "2",
+      "version": "3",
       "fact_definitions": {
         "printer_powered": {
           "description": "Czy drukarka jest włączona.",
@@ -510,6 +611,22 @@
         "consumable_depleted": {
           "description": "Czy użytkownik zgłasza aktualny komunikat o braku tuszu/tonera lub potwierdza pusty wkład: true. Sam niski poziom, zaprzeczenie lub już wymieniony wkład: false. Podejrzenie bez sprawdzenia: niepewne, nie true. Nie zgaduj na podstawie problemu skanowania.",
           "value_type": "boolean"
+        },
+        "hardware_damage": {
+          "description": "True tylko dla zgłoszonego uszkodzenia fizycznego drukarki, pękniętego elementu lub nietypowego mechanicznego hałasu. Sam brak wydruku lub zwykłe zacięcie papieru nie oznacza uszkodzenia. Podejrzenie bez potwierdzenia oznacz jako niepewne.",
+          "value_type": "boolean"
+        },
+        "print_quality_problem": {
+          "description": "Czy wykonany wydruk ma smugi, jest blady, nieczytelny, pusty lub ma nieprawidłowe kolory. Brak jakiegokolwiek wydruku nie ustala tego faktu.",
+          "value_type": "boolean"
+        },
+        "driver_or_permission_problem": {
+          "description": "True tylko gdy zgłoszony komunikat wyraźnie dotyczy brakującego/niedostępnego sterownika albo braku uprawnień do drukarki. Sam status Offline nie wystarcza.",
+          "value_type": "boolean"
+        },
+        "queue_stalled": {
+          "description": "Czy użytkownik zgłasza, że jego zadanie pozostaje w kolejce drukowania lub ma status wstrzymane. Nie wnioskuj z samego braku wydruku.",
+          "value_type": "boolean"
         }
       },
       "extraction_reasoning": true,
@@ -530,10 +647,34 @@
           ],
           "values": [
             "OFFLINE",
+            "NIEDOSTĘPNA",
+            "NIEDOSTEPNA",
             "PAPER JAM",
-            "BRAK PAPIERU"
+            "PAPERJAM",
+            "ZACIĘCIE PAPIERU",
+            "ZACIĘTY PAPIER",
+            "ZABLOKOWANY PAPIER",
+            "BRAK PAPIERU",
+            "NO PAPER",
+            "OUT OF PAPER"
           ],
           "contains": true
+        },
+        {
+          "keys": [
+            "queue_stalled"
+          ],
+          "values": [
+            true
+          ]
+        },
+        {
+          "keys": [
+            "print_quality_problem"
+          ],
+          "values": [
+            true
+          ]
         }
       ]
     },

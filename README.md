@@ -265,6 +265,15 @@ ticket queue. Coverage means the catalog can collect relevant facts, provide an
 approved action where one exists, or escalate safely; it does not imply automatic
 repair of every possible product-specific fault.
 
+The printing workflow distinguishes paper jams, missing paper, unavailable
+printers, consumable warnings, stalled queues, poor print quality, explicit
+driver/access errors, and reported hardware damage. Generic paper checks require
+user confirmation that printing works; blocked or unsuccessful checks create a
+local IT ticket. Model-specific maintenance, physical repairs, driver changes,
+and shared queue operations are handed off to IT. Offline checks do not restart
+a shared printer. Catalog version 3 starts new printing conversations; existing
+conversations using an older version are handed off for review.
+
 ## Technology stack
 
 ### Backend and data

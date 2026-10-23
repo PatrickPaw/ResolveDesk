@@ -172,6 +172,39 @@ def test_historical_diagnostic_fact_cannot_be_relabelled_as_fresh(monkeypatch):
     assert result.facts == {"powered":True}
 
 
+@pytest.mark.parametrize("error", ["Paper jam", "No signal", "Access denied"])
+def test_diagnostic_quotes_preserve_current_message_case(monkeypatch, error):
+    ai = OllamaProvider()
+    monkeypatch.setattr(ai, "_chat", lambda *args, **kwargs: json.dumps({
+        "understood": True, "facts": {"error_message": error.upper()},
+        "evidence": {"error_message": error.upper()},
+    }))
+    result = ai.analyze_diagnostic_response(
+        f'Widzę komunikat "{error}"', IncidentState(),
+        DiagnosticState(playbook_id="PRINTING", pending_fact="error_message"),
+        "PRINTING", {"error_message": "Displayed error"},
+    )
+    assert result.facts == {"error_message": error.upper()}
+    assert result.evidence == {"error_message": error}
+
+
+def test_reported_paper_jam_selects_catalog_action(monkeypatch):
+    from app.services.playbook import get_next_playbook_action
+
+    ai = OllamaProvider()
+    monkeypatch.setattr(ai, "_chat", lambda *args, **kwargs: json.dumps({
+        "understood": True, "facts": {"error_message": "PAPER JAM"},
+        "evidence": {"error_message": "PAPER JAM"},
+    }))
+    diagnostic, _ = process_diagnostic_message(
+        ai, 'Widzę komunikat "Paper jam"', IncidentState(),
+        DiagnosticState(playbook_id="PRINTING", pending_fact="error_message"),
+    )
+    step = get_next_playbook_action(diagnostic, ResolutionState())
+    assert step is not None
+    assert step.source_id == "PLAYBOOK-PRINTING_PAPER_JAM_1"
+
+
 @pytest.mark.parametrize("instruction,accepted", [
     ("Sprawdź kabel własnego monitora.",True),
     ("Zresetuj router.",False),
