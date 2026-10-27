@@ -1,3 +1,90 @@
+:root {
+  color-scheme: only dark;
+  --on-accent: #ffffff;
+  --page: #20242b;
+  --canvas: #181c21;
+  --header: #1b1f25;
+  --footer: #1b1f24;
+  --text: #f5f7fa;
+  --heading: #ffffff;
+  --muted: #aeb7c4;
+  --border: #343b45;
+  --avatar: #29344a;
+  --avatar-text: #a9bfff;
+  --scrollbar: #3d4652;
+  --scrollbar-hover: #4d5866;
+  --message: #292e35;
+  --message-border: #3a424d;
+  --message-text: #e7ebf0;
+  --trace-border: #475569;
+  --link: #93c5fd;
+  --trace-text: #d7e0ec;
+  --code: #bfdbfe;
+  --loading: #a2adbb;
+  --error: #ffd6a8;
+  --control-border: #566170;
+  --input-border: #46505d;
+  --input: #20252c;
+  --input-text: #f7f9fb;
+  --placeholder: #8995a5;
+  --input-focus: #232932;
+  --focus: #6688f5;
+  --accent: #4f7cff;
+  --accent-hover: #416bea;
+  --note: #97a3b3;
+  --closed: #b4bdc9;
+  --demo-border: #c3a15a;
+  --demo: #242b35;
+  --demo-button-border: #617dbf;
+  --demo-button: #385795;
+  --demo-surface: #181c22;
+  --demo-code: #f7d58e;
+  --demo-input-border: #8ea1c9;
+}
+
+:root[data-theme="light"] {
+  color-scheme: only light;
+  --page: #f1f4f8;
+  --canvas: #f5f7fb;
+  --header: #ffffff;
+  --footer: #ffffff;
+  --text: #182334;
+  --heading: #152238;
+  --muted: #526174;
+  --border: #d5dde8;
+  --avatar: #e3ebff;
+  --avatar-text: #3157a8;
+  --scrollbar: #b3bfce;
+  --scrollbar-hover: #8796aa;
+  --message: #ffffff;
+  --message-border: #d5dde8;
+  --message-text: #243247;
+  --trace-border: #c6d2e2;
+  --link: #2459a6;
+  --trace-text: #34465f;
+  --code: #244f92;
+  --loading: #63738a;
+  --error: #913c08;
+  --control-border: #97a6bb;
+  --input-border: #bcc8d8;
+  --input: #ffffff;
+  --input-text: #182334;
+  --placeholder: #637187;
+  --input-focus: #f7faff;
+  --focus: #315ed1;
+  --accent: #315ed1;
+  --accent-hover: #254bb2;
+  --note: #5e6c7f;
+  --closed: #47576e;
+  --demo-border: #a47a24;
+  --demo: #fff9ed;
+  --demo-button-border: #4a68a7;
+  --demo-button: #385795;
+  --demo-surface: #ffffff;
+  --demo-code: #755315;
+  --demo-input-border: #8ea1c9;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -12,8 +99,8 @@ html {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-  background: #1b1e23;
-  color-scheme: dark;
+  background: var(--canvas);
+  color: var(--text);
 }
 
 body {

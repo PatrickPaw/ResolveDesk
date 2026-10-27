@@ -2,6 +2,17 @@
 <html lang="pl">
   <head>
     <meta charset="UTF-8" />
+    <meta name="color-scheme" content="dark" />
+    <script>
+      (() => {
+        let theme = 'dark';
+        try {
+          if (localStorage.getItem('resolvedesk.theme') === 'light') theme = 'light';
+        } catch { /* Use the default when browser storage is unavailable. */ }
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="color-scheme"]').content = theme === 'light' ? 'only light' : 'dark';
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
     <title>ResolveDesk</title>
